@@ -1,5 +1,5 @@
 from core.request.abstract_request import Request
-from core.local_db.connection_factory import ConnectionFactory
+from core.local_db.dbconnection_factory import DBConnectionFactory
 import sqlite3
 
 
@@ -7,7 +7,7 @@ class DBRequest(Request):
     
     def __init__(self):
         super(DBRequest, self).__init__()
-        self.conn = ConnectionFactory().createConnection("localDB.db")
+        self.conn = DBConnectionFactory().createConnection("localDB.db")
         self.conn.text_factory = str
 
     def setTipoDato(self, tipo):
@@ -39,8 +39,7 @@ class DBRequest(Request):
                                float(self.value)))
             self.done()
         except sqlite3.IntegrityError:
-            print ("Errore di intregrità nei dati")
-            #raise Exception ("Errore durante l'esecuzione della query")
+            print("Errore di intregrità nei dati")
 
     def done(self):
         self.conn.commit()

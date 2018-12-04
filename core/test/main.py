@@ -5,6 +5,9 @@ from core.base.lum_sensor import LuminositySensor
 from core.sensor_implementation.impLumSensor import ImpLuminositySensor
 from core.sensor_implementation.impNoiseSensor import ImpNoiseSensor
 from core.sensor_implementation.impMotionSensor import ImpMotionSensor
+from core.pre_elaborazione.elaborate_data import ElaborateData
+from core.pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
+
 import schedule
 import time
 
@@ -25,11 +28,24 @@ def main():
     s_lum = LuminositySensor(imp_lum, data_manager)
     s_lum.setup()
 
+    elaboration_manager = ElaborateData()
+    elaboration_noise = PreElaborationNoise()
+
+    elaboration_manager.addImplementation(elaboration_noise)
+
+
+
     try:
+
+    #    schedule.every(1).minute.do(s_motion.getData)
+    #    schedule.every(1).minute.do(s_noise.getData)
+    #    schedule.every(1).minute.do(s_lum.getData)
 
         schedule.every(1).minute.do(s_motion.getData)
         schedule.every(1).minute.do(s_noise.getData)
         schedule.every(1).minute.do(s_lum.getData)
+
+        schedule.every(1).hour.do(elaboration_manager.update)
 
         while True:
             schedule.run_pending()
@@ -37,6 +53,8 @@ def main():
 
     except KeyboardInterrupt:
         s_motion.closeSensor()
+        s_lum.closeSensor()
+        s_noise.closeSensor()
 
 
 if __name__ == "__main__":

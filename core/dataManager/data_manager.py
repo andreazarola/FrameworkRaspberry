@@ -1,29 +1,29 @@
-from abc import ABC,abstractmethod
+from abc import ABC, abstractmethod
 
 
 class DataManager(ABC):
 
     def __init__(self):
-        self.numSensori = 0
-        self.countSensori = 0
+        self.count_sensori = 0
+        self.sensor_list = list()
 
     @abstractmethod
-    def attach_sensor(self):
+    def attach_sensor(self, tipo_sensore):
         pass
 
     @abstractmethod
-    def detach_sensor(self):
+    def detach_sensor(self, tipo_sensore):
         pass
 
     @abstractmethod
-    def update(self,sensore):
+    def update(self, sensore):
        pass
 
     def addNotitySensor(self):
-        self.countSensori += 1
+        self.count_sensori += 1
 
     def resetNotifySensor(self):
-        self.countSensori = 0
+        self.count_sensori = 0
 
     def allDataArrived(self):
-        return self.countSensori == self.numSensori
+        return self.countSensori == len(self.sensor_list)

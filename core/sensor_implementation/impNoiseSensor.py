@@ -3,7 +3,7 @@ from core.sensor_implementation.AbstractImplementation import AbstractImplementa
 #import PCF8591 as ADC
 #import RPi.GPIO as GPIO
 import time
-
+import random
 
 class ImpNoiseSensor(AbstractImplementation):
 
@@ -17,7 +17,8 @@ class ImpNoiseSensor(AbstractImplementation):
         time.sleep(2)
 
     def get_valore(self):
-        data = 51
+        #data = 51
+        data = random.randint(40, 60)
         #data = ADC.read(0)
         return data
 

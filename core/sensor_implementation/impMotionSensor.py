@@ -2,6 +2,7 @@
 from core.sensor_implementation.AbstractImplementation import AbstractImplementation
 #import RPi.GPIO as GPIO
 import time
+import random
 
 
 class ImpMotionSensor(AbstractImplementation):
@@ -16,7 +17,8 @@ class ImpMotionSensor(AbstractImplementation):
         time.sleep(2)
 
     def get_valore(self):
-        return 0
+        #return 0
+        return random.randint(0, 1)
         #if GPIO.input(self.pinSensor) == True:
         #    return True
         #return False

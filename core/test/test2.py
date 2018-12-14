@@ -45,7 +45,7 @@ def main():
         scheduler.add_job(s_noise.getData, 'cron', second=0)
         scheduler.add_job(s_lum.getData, 'cron', second=0)
 
-        scheduler.add_job(elaboration_manager.update, 'cron', minute=40, second=0)
+        scheduler.add_job(elaboration_manager.update, 'cron', minute=0, second=0)
 
         scheduler.start()
 

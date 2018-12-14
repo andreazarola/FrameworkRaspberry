@@ -1,6 +1,7 @@
 from datetime import datetime
 
 
+
 class ElaborateData:
 
     def __init__(self):
@@ -32,11 +33,23 @@ class ElaborateData:
 
         for imp in self.elaborate_list:
             imp.execute(giorno, ora, timestamp)
-    """
-    Funzione che restituisce il giorno precedente a quello
-    ricevuto come parametro
-    """
+            imp.save_localdb()
+
+        self.sendAll()
+
+
+    def sendAll(self):
+        """
+        Da implementare
+        :return: None
+        """
+        pass
+
     def giornoPrec(self, giorno):
+        """
+        :param giorno: nome del giorno di cui restituire quello precendente
+        :return: restituisce il giorno precedente a quello ricevuto
+        """
         if giorno == "Monday":
             return "Sunday"
         elif giorno == "Tuesday":

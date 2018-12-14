@@ -1,6 +1,7 @@
 #controllare setup e raccolta del dato
 from core.sensor_implementation.AbstractImplementation import AbstractImplementation
 import time
+import random
 
 
 class ImpLuminositySensor(AbstractImplementation):
@@ -13,7 +14,8 @@ class ImpLuminositySensor(AbstractImplementation):
         pass
 
     def get_valore(self):
-        return 21
+        #return 21
+        return random.randint(15, 30)
         #pass
 
     def closeSensor(self):

@@ -1,5 +1,5 @@
 #controllare setup e raccolta del dato
-from core.sensor_implementation.AbstractImplementation import AbstractImplementation
+from sensor_implementation.AbstractImplementation import AbstractImplementation
 #import RPi.GPIO as GPIO
 import time
 import random

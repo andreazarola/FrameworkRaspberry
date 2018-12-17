@@ -1,4 +1,4 @@
-from core.local_db.dbconnection_factory import DBConnectionFactory
+from local_db.dbconnection_factory import DBConnectionFactory
 import re
 
 

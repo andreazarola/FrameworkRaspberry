@@ -1,5 +1,5 @@
-from core.dataManager.instantDataManager import InstantDataManager
-from core.pre_elaborazione.elaborate_data import ElaborateData
+from dataManager.instantDataManager import InstantDataManager
+from pre_elaborazione.elaborate_data import ElaborateData
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
 

@@ -1,7 +1,6 @@
-from core.pre_elaborazione.abstract_pre_elaboration import AbstractPreElaboration
-from core.pre_elaborazione.db_requestdatafactory import DBRequestDataFactory
-
-from core.local_db.dbconnection_factory import DBConnectionFactory
+from pre_elaborazione.abstract_pre_elaboration import AbstractPreElaboration
+from pre_elaborazione.db_requestdatafactory import DBRequestDataFactory
+from local_db.dbconnection_factory import DBConnectionFactory
 
 
 class PreElaborationMotion(AbstractPreElaboration):

@@ -1,8 +1,8 @@
-from core.dataManager.data_manager import DataManager
-from core.dataManager.dataElement import dataElement
-from core.local_db.dbconnection_factory import DBConnectionFactory
-from core.request.db_requestfactory import DBRequestFactory
-from core.request.hive_requestfactory import HiveRequestFactory
+from dataManager.data_manager import DataManager
+from dataManager.dataElement import dataElement
+from local_db.dbconnection_factory import DBConnectionFactory
+from request.db_requestfactory import DBRequestFactory
+from request.hive_requestfactory import HiveRequestFactory
 from threading import Lock
 
 
@@ -94,9 +94,15 @@ class InstantDataManager(DataManager):
         cursor = connection.cursor()
         cursor.execute("SELECT * "
                        "FROM Info")
-        row = cursor.fetchone()
-        info = {"idLamp": row[0],
-                "area": row[1],
-                "lat": row[2],
-                "lon": row[3]}
+        info = None
+        try:
+            row = cursor.fetchone()
+            info = {"idLamp": row[0],
+                    "area": row[1],
+                    "lat": row[2],
+                    "lon": row[3]}
+        except TypeError:
+            print("Dati non inviati esternamente")
+            print("Necessario settare info sul dispositivo")
+
         return info

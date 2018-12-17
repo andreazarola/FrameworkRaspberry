@@ -1,4 +1,4 @@
-from core.base.sensor import Sensore
+from base.sensor import Sensore
 
 class MotionSensor(Sensore):
 

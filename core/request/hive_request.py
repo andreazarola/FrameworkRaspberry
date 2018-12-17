@@ -1,5 +1,5 @@
-from core.request.abstract_request import Request
-from core.request.HiveConnectionFactory import HiveConnectionFactory
+from request.abstract_request import Request
+from request.HiveConnectionFactory import HiveConnectionFactory
 
 
 class HiveRequest(Request):

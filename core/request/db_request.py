@@ -1,5 +1,5 @@
-from core.request.abstract_request import Request
-from core.local_db.dbconnection_factory import DBConnectionFactory
+from request.abstract_request import Request
+from local_db.dbconnection_factory import DBConnectionFactory
 import sqlite3
 
 

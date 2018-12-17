@@ -1,8 +1,7 @@
 import sqlite3
 
-
-def init_db():
-    conn = sqlite3.connect("localDB.db")
+def init_db(path):
+    conn = sqlite3.connect(path + "localDB.db")
 
     conn.execute("CREATE TABLE IF NOT EXISTS Dato ("
                  "timestamp text,"

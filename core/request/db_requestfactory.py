@@ -1,5 +1,5 @@
-from core.request.request_factory import RequestFactory
-from core.request.db_request import DBRequest
+from request.request_factory import RequestFactory
+from request.db_request import DBRequest
 
 
 class DBRequestFactory(RequestFactory):

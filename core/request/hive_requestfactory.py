@@ -1,5 +1,5 @@
-from core.request.request_factory import RequestFactory
-from core.request.hive_request import HiveRequest
+from request.request_factory import RequestFactory
+from request.hive_request import HiveRequest
 
 
 class HiveRequestFactory(RequestFactory):

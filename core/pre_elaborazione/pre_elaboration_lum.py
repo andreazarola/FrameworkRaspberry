@@ -20,22 +20,40 @@ class PreElaborationLum(AbstractPreElaboration):
         self.timestamp = stamp.strftime("%A, %d. %B %Y %H:%M:%S")
         request = DBRequestDataFactory().createRequest()
         request.setTipo(self.tipo)
-        request.setHour(self.lastHour)
-        request.setWeekDay(self.lastDay)
+        request.setHour(ora)
+        request.setWeekDay(giorno)
         request.execute()
 
-        """
-        Calcolo del valore medio di rumorosita
-        """
-        somma, count = 0.0, 0
+        lastSum, count = 0.0, 0
         for value in request.fetchAll():
-            somma += value
+            lastSum += value
             count += 1
 
-        self.value = float(somma/count)
+        info = self.get_info()
+
+        count += info[0]
+
+        lastSum += int(round(info[1]))
+
+        self.value = float(lastSum / count)
+
+        self.nCampioni = info[0]
 
         print("Valore medio di " + self.tipo + " di " + giorno +
               " alle ore " + str(ora) + ": " + str(self.value))
+
+    def get_info(self):
+        conn = DBConnectionFactory().createConnection("localDB.db")
+        numCampioni = 0
+        value = 0
+        for row in conn.execute("SELECT numCampioni, valore "
+                                "FROM Pre_elaborato "
+                                "WHERE tipo = ? and giorno = ? and ora = ?",
+                                (self.tipo, self.lastDay, self.lastHour)):
+            numCampioni = row[0]
+            value = row[1]
+        conn.close()
+        return numCampioni, numCampioni * value
 
     def save_localdb(self):
         conn = DBConnectionFactory().createConnection("localDB.db")
@@ -48,12 +66,12 @@ class PreElaborationLum(AbstractPreElaboration):
 
         if exist:
             conn.execute("UPDATE Pre_elaborato "
-                         "SET valore = ?, timestamp = ? "
+                         "SET valore = ?, numCampioni = ?, timestamp = ? "
                          "WHERE tipo = ? and giorno = ? and ora = ?",
-                         (self.value, self.timestamp, self.tipo, self.lastDay, self.lastHour))
+                         (self.value, self.nCampioni, self.timestamp, self.tipo, self.lastDay, self.lastHour))
         else:
-            conn.execute("INSERT INTO Pre_elaborato values (?, ?, ?, ?, ?)",
-                         (self.tipo, self.lastDay, self.lastHour, self.value, self.timestamp))
+            conn.execute("INSERT INTO Pre_elaborato values (?, ?, ?, ?, ?, ?)",
+                         (self.tipo, self.lastDay, self.lastHour, self.nCampioni, self.value, self.timestamp))
 
         conn.commit()
         conn.close()

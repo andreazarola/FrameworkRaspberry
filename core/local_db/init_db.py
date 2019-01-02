@@ -10,18 +10,21 @@ def init_db(path):
                  "primary key(timestamp,tipo))")
 
     conn.execute("CREATE TABLE IF NOT EXISTS Info ("
-                 "id_lampione integer,"
+                 "id_lampione integer primary_key,"
                  "area text,"
+                 "idArea integer,"
                  "latitudine real,"
                  "longitudine real,"
-                 "primary key (id_lampione,area))")
+                 "prevLamp integer,"
+                 "nextLamp integer )")
 
     conn.execute("CREATE TABLE IF NOT EXISTS Pre_elaborato ("
                  "tipo text,"
                  "giorno text,"
                  "ora integer,"
+                 "numCampioni integer,"
                  "valore real,"
-                 "timestamp text    ,"
+                 "timestamp text,"
                  "primary key (tipo, giorno, ora))")
 
     conn.commit()

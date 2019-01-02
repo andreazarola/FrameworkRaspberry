@@ -9,6 +9,7 @@ class AbstractPreElaboration(ABC):
         self.lastDay = None
         self.lastHour = None
         self.timestamp = None
+        self.nCampioni = None
 
     @abstractmethod
     def execute(self, giorno, ora, stamp):

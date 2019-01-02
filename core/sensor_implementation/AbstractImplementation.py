@@ -12,7 +12,3 @@ class AbstractImplementation(ABC):
     @abstractmethod
     def get_valore(self):
         pass
-
-    @abstractmethod
-    def closeSensor(self):
-        pass

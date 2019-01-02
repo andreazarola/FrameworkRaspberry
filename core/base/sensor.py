@@ -34,4 +34,3 @@ class Sensore(ABC):
 
     def closeSensor(self):
         self.observer.detach_sensor(self.tipoSensore)
-        self.implementation.closeSensor()

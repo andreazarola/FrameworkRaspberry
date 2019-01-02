@@ -7,6 +7,7 @@
           <option value="core.test3.sensor_implementation" />
           <option value="core.test3.base" />
           <option value="core.test3.local_db" />
+          <option value="core.sensor_implementation.impLumSensor.sensor_implementation" />
         </list>
       </option>
     </inspection_tool>

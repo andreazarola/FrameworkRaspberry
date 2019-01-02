@@ -1,28 +1,19 @@
 #controllare setup e raccolta del dato
 from sensor_implementation.AbstractImplementation import AbstractImplementation
-#import RPi.GPIO as GPIO
-import time
+from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
 import random
 
 
 class ImpMotionSensor(AbstractImplementation):
 
-    def __init__(self,pin):
+    def __init__(self, pin, GPIO_ADC):
         super(ImpMotionSensor, self).__init__(PIN=pin)
+        self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        #GPIO.setmode(GPIO.BOARD)
-        #GPIO.setup(self.pinSensor,GPIO.IN)
-        # tempo dato al sensore per il setup iniziale
-        time.sleep(2)
+        self.sharedGPIO_ADCReader.addInputPIN(self.pin)
 
     def get_valore(self):
-        #return 0
-        return random.randint(0, 1)
-        #if GPIO.input(self.pinSensor) == True:
-        #    return True
-        #return False
-
-    def closeSensor(self):
-        time.sleep(2)
-        #GPIO.cleanup()
+        data = random.randint(0, 1)
+        #data = int(self.sharedGPIO_ADCReader.readGPIO(self.pin))
+        return data

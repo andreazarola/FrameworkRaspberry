@@ -13,6 +13,10 @@ class Launcher:
         self.scheduler = BackgroundScheduler()
         self.triggerSecond = 0
         self.triggerMinute = 0
+        self.sharedGPIO_ADC = None
+
+    def setGPIO_ADC(self, GPIO_ADC):
+        self.sharedGPIO_ADC = GPIO_ADC
 
     def aggiungiSensore(self, sensore):
         self.sensors.append(sensore)
@@ -42,3 +46,5 @@ class Launcher:
         except KeyboardInterrupt:
             for s in self.sensors:
                 s.closeSensor()
+
+            self.sharedGPIO_ADC.clean()

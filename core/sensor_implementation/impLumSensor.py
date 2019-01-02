@@ -1,23 +1,19 @@
 #controllare setup e raccolta del dato
 from sensor_implementation.AbstractImplementation import AbstractImplementation
-import time
+from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
 import random
 
 
 class ImpLuminositySensor(AbstractImplementation):
 
-    def __init__(self,pin):
+    def __init__(self, pin, GPIO_ADC):
         super(ImpLuminositySensor, self).__init__(PIN=pin)
+        self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        time.sleep(2)
-        pass
+        self.sharedGPIO_ADCReader.addADCChannel(self.pin)
 
     def get_valore(self):
-        #return 21
-        return random.randint(15, 30)
-        #pass
-
-    def closeSensor(self):
-        time.sleep(1)
-        #pass
+        data = random.randint(15, 30)
+        #data = self.sharedGPIO_ADCReader.readADC(self.pin)
+        return data

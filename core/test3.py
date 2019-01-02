@@ -9,15 +9,18 @@ from sensor_implementation.impMotionSensor import ImpMotionSensor
 from pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
 from pre_elaborazione.pre_elaboration_motion import PreElaborationMotion
 from pre_elaborazione.pre_elaboration_lum import PreElaborationLum
+from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
 import sys
 
 
 def main():
     init_db(sys.path[0] + "/local_db/")
     launcher = Launcher()
-    launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=2), launcher.dataManager))
-    launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=3), launcher.dataManager))
-    launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=4), launcher.dataManager))
+    shared = SharedGPIO_ADCReader()
+
+    launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
+    launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
+    launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
 
     launcher.aggiungiElaborazione(PreElaborationMotion())
     launcher.aggiungiElaborazione(PreElaborationLum())

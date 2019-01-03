@@ -11,9 +11,9 @@ class ImpMotionSensor(AbstractImplementation):
         self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        self.sharedGPIO_ADCReader.addInputPIN(self.pin)
+        self.sharedGPIO_ADCReader.addInputPIN(self.PIN)
 
     def get_valore(self):
         data = random.randint(0, 1)
-        #data = int(self.sharedGPIO_ADCReader.readGPIO(self.pin))
+        #data = int(self.sharedGPIO_ADCReader.readGPIO(self.PIN))
         return data

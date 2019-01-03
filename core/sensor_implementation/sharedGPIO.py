@@ -9,7 +9,7 @@ class SharedGPIO_ADCReader:
         """
         :param busADC: numero del bus per controllare la periferica PCF8591
         """
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         self.inputPIN = list()
         self.outputPIN = list()
         self.channelADCReader = list()

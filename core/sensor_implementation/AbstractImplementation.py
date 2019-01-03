@@ -3,7 +3,7 @@ from abc import ABC,abstractmethod
 class AbstractImplementation(ABC):
 
     def __init__(self,PIN):
-        self.pinSensor=PIN
+        self.PIN = PIN
 
     @abstractmethod
     def setup(self):

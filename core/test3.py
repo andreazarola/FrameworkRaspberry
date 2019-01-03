@@ -17,7 +17,7 @@ def main():
     init_db(sys.path[0] + "/local_db/")
     launcher = Launcher()
     shared = SharedGPIO_ADCReader()
-
+    launcher.setGPIO_ADC(shared)
     launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))

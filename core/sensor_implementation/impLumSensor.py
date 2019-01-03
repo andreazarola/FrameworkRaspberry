@@ -11,9 +11,21 @@ class ImpLuminositySensor(AbstractImplementation):
         self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        self.sharedGPIO_ADCReader.addADCChannel(self.pin)
+        self.sharedGPIO_ADCReader.addADCChannel(self.PIN)
 
     def get_valore(self):
         data = random.randint(15, 30)
-        #data = self.sharedGPIO_ADCReader.readADC(self.pin)
+        data = self.conv(data)
+        #data = self.sharedGPIO_ADCReader.readADC(self.PIN)
         return data
+
+    def conv(self, data):
+        """
+        Commentare la prima linea della funzione per attivare la conversione
+        :param data: valore analogico da convertire nell'intervallo (0, 100)
+        :return: valore nell'intervallo (0, 100)
+        """
+        return data
+        temp = int((data*100)/250)
+        temp = 100 - temp
+        return temp

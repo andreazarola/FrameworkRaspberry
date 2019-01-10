@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from logs.logger import Logger
 
 
 class ElaborateData:
@@ -19,7 +19,8 @@ class ElaborateData:
     def update(self):
         timestamp = datetime.now()
         info = timestamp.strftime("%A %H").split(" ")
-        print(info[0] + " " + info[1])
+        #print(info[0] + " " + info[1])
+        Logger.getInstance().printline(info[0] + " " + info[1])
 
         ora = int(info[1]) - 1
         giorno = info[0]

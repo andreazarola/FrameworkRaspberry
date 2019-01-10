@@ -1,4 +1,5 @@
 from local_db.dbconnection_factory import DBConnectionFactory
+from logs.logger import Logger
 import re
 
 
@@ -36,7 +37,8 @@ class DBRequestData:
         try:
             self.re = str(self.weekDay) + ",\s\d{2}\.\s[a-zA-Z]+\s\d{4}\s" + self.hour + ":\d+.+"
         except TypeError:
-            print("Valori di hour o weekDay errati")
+            #print("Valori di hour o weekDay errati")
+            Logger.getInstance().printline("Valori di hour o weekDay errati")
 
         self.conn.create_function("REGEXP", 2, regexp)
 

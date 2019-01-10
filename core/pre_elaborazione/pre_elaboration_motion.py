@@ -1,6 +1,7 @@
 from pre_elaborazione.abstract_pre_elaboration import AbstractPreElaboration
 from pre_elaborazione.db_requestdatafactory import DBRequestDataFactory
 from local_db.dbconnection_factory import DBConnectionFactory
+from logs.logger import Logger
 
 
 class PreElaborationMotion(AbstractPreElaboration):
@@ -39,8 +40,10 @@ class PreElaborationMotion(AbstractPreElaboration):
 
         self.nCampioni = info[0]
 
-        print("Frequenza relativa di " + self.tipo + " di " + giorno +
-              " alle ore " + str(ora) + ": " + str(self.value))
+        #print("Frequenza relativa di " + self.tipo + " di " + giorno +
+        #     " alle ore " + str(ora) + ": " + str(self.value))
+        Logger.getInstance().printline("Frequenza relativa di " + self.tipo + " di " + giorno +
+                                       " alle ore " + str(ora) + ": " + str(self.value))
 
     def get_info(self):
         conn = DBConnectionFactory().createConnection("localDB.db")

@@ -10,11 +10,17 @@ from pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
 from pre_elaborazione.pre_elaboration_motion import PreElaborationMotion
 from pre_elaborazione.pre_elaboration_lum import PreElaborationLum
 from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
+from logs.logger import Logger
 import sys
 
 
 def main():
-    init_db(sys.path[0] + "/local_db/")
+    path = sys.path[0]
+    option = sys.argv[1] if len(sys.argv) > 1 else None
+    if option == "-log":
+        log = Logger.getInstance()
+        log.init_logger(path)
+    init_db(path + "/local_db/")
     launcher = Launcher()
     shared = SharedGPIO_ADCReader()
     launcher.setGPIO_ADC(shared)

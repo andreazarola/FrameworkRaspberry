@@ -3,7 +3,9 @@ from dataManager.dataElement import dataElement
 from local_db.dbconnection_factory import DBConnectionFactory
 from request.db_requestfactory import DBRequestFactory
 from request.hive_requestfactory import HiveRequestFactory
+from logs.logger import Logger
 from threading import Lock
+import json
 
 
 class InstantDataManager(DataManager):
@@ -72,13 +74,15 @@ class InstantDataManager(DataManager):
 
     def sendToHive(self):
         #########################################
-        print("Invio dati grezzi di tutti i sensori ad hive")
+        #print("Invio dati grezzi di tutti i sensori ad hive")
+        Logger.getInstance().printline("Invio dati grezzi di tutti i sensori ad hive")
         #########################################
         """
         prendo dal db locale le info sul lampione (area,id,geotag)
         """
         info = self.getInfoLamp()
-        print(info)
+        #print(info)
+        Logger.getInstance().printline(json.dumps(info))
         #request = HiveRequestFactory().createRequest().setInfoLamp(info)
         #request.setData(self.data_to_hive_list)
         #request.execute()
@@ -102,7 +106,9 @@ class InstantDataManager(DataManager):
                     "lat": row[2],
                     "lon": row[3]}
         except TypeError:
-            print("Dati non inviati esternamente")
-            print("Necessario settare info sul dispositivo")
+            #print("Dati non inviati esternamente")
+            #print("Necessario settare info sul dispositivo")
+            Logger.getInstance().printline("Dati non inviati esternamente")
+            Logger.getInstance().printline("Necessario settare info sul dispositivo")
 
         return info

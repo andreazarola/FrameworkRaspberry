@@ -1,6 +1,7 @@
 from pre_elaborazione.abstract_pre_elaboration import AbstractPreElaboration
 from pre_elaborazione.db_requestdatafactory import DBRequestDataFactory
 from local_db.dbconnection_factory import DBConnectionFactory
+from logs.logger import Logger
 
 
 class PreElaborationLum(AbstractPreElaboration):
@@ -39,8 +40,10 @@ class PreElaborationLum(AbstractPreElaboration):
 
         self.nCampioni = info[0]
 
-        print("Valore medio di " + self.tipo + " di " + giorno +
-              " alle ore " + str(ora) + ": " + str(self.value))
+        #print("Valore medio di " + self.tipo + " di " + giorno +
+        #     " alle ore " + str(ora) + ": " + str(self.value))
+        Logger.getInstance().printline("Valore medio di " + self.tipo + " di " + giorno +
+                                       " alle ore " + str(ora) + ": " + str(self.value))
 
     def get_info(self):
         conn = DBConnectionFactory().createConnection("localDB.db")

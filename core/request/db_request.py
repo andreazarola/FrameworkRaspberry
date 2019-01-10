@@ -1,6 +1,7 @@
 from request.abstract_request import Request
 from local_db.dbconnection_factory import DBConnectionFactory
 import sqlite3
+from logs.logger import Logger
 
 
 class DBRequest(Request):
@@ -39,7 +40,8 @@ class DBRequest(Request):
                                float(self.value)))
             self.done()
         except sqlite3.IntegrityError:
-            print("Errore di intregrità nei dati")
+            #print("Errore di intregrità nei dati")
+            Logger.getInstance().printline("Errore di intregrità nei dati")
 
     def done(self):
         self.conn.commit()

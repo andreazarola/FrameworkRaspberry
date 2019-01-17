@@ -1,4 +1,5 @@
 import sqlite3
+from setupLamp import setupLamp
 
 def init_db(path):
     conn = sqlite3.connect(path + "localDB.db")
@@ -11,7 +12,6 @@ def init_db(path):
 
     conn.execute("CREATE TABLE IF NOT EXISTS Info ("
                  "id_lampione integer primary_key,"
-                 "area text,"
                  "idArea integer,"
                  "latitudine real,"
                  "longitudine real,"
@@ -30,3 +30,9 @@ def init_db(path):
     conn.commit()
 
     conn.close()
+
+    setupLamp()
+
+
+if __name__ == "__main__":
+    init_db('')

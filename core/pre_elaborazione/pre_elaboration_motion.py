@@ -59,6 +59,10 @@ class PreElaborationMotion(AbstractPreElaboration):
         return numCampioni, numCampioni * value
 
     def save_localdb(self):
+        """
+        Salva o aggiorna il valore elaborato sul db locale
+        :return: il documento da inviare ad ES
+        """
         conn = DBConnectionFactory().createConnection("localDB.db")
         exist = False
         for row in conn.execute("SELECT * "
@@ -78,3 +82,11 @@ class PreElaborationMotion(AbstractPreElaboration):
 
         conn.commit()
         conn.close()
+
+        return {
+                'tipo_dato': self.tipo,
+                'value': self.value,
+                'giorno': str(self.lastDay),
+                'ora': str(self.lastHour),
+                'timestamp': self.timestamp
+        }

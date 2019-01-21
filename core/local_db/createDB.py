@@ -13,6 +13,7 @@ conn.execute("CREATE TABLE IF NOT EXISTS Info ("
              "idArea integer,"
              "latitudine real,"
              "longitudine real,"
+             "static_ip text,"
              "prevLamp integer,"
              "nextLamp integer )")
 

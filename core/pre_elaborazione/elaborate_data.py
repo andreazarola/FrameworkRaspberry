@@ -1,5 +1,7 @@
 from datetime import datetime
 from logs.logger import Logger
+from elasticsearch import helpers
+from request.es_connection_factory import ESConnectionFactory
 
 
 class ElaborateData:
@@ -9,6 +11,8 @@ class ElaborateData:
            elaborano i dati
         """
         self.elaborate_list = list()
+        self.data_list = list()
+        self.index_ES = 'pre_elaborazione'
 
     def addImplementation(self, impl):
         self.elaborate_list.append(impl)
@@ -26,7 +30,7 @@ class ElaborateData:
         giorno = info[0]
 
         """
-        caso in cui mi trova a mezzanotte
+        caso in cui mi trovo a mezzanotte
         """
         if ora < 0:
             ora = 23
@@ -34,17 +38,34 @@ class ElaborateData:
 
         for imp in self.elaborate_list:
             imp.execute(giorno, ora, timestamp)
-            imp.save_localdb()
+            data = imp.save_localdb()
+            self.data_list.append(data)
 
         self.sendAll()
+        self.data_list.clear()
 
 
     def sendAll(self):
         """
-        Da implementare
+        Invia i dati appena elaborati ad ES
         :return: None
         """
-        pass
+        actions = [
+            {
+                '_index': self.index_ES,
+                '_type': '_doc',
+                '_source': {
+                    'type_data': data['tipo_dato'],
+                    'value': data['value'],
+                    'giorno': data['giorno'],
+                    'ora': data['ora'],
+                    'timestamp': data['timestamp']
+                }
+            }
+            for data in self.data_list
+        ]
+        helpers.bulk(ESConnectionFactory().createConnection(), actions)
+
 
     def giornoPrec(self, giorno):
         """

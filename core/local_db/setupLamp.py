@@ -12,8 +12,8 @@ lon = 16.256195
 prevLamp = None
 nextLamp = None
 
-def setupLamp():
-    conn = sqlite3.connect("localDB.db")
+def setupLamp(absolutePath):
+    conn = sqlite3.connect(absolutePath)
 
     conn.execute("DELETE FROM Info")
     conn.commit()

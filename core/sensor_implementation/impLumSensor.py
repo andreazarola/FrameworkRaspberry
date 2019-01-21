@@ -1,4 +1,3 @@
-#controllare setup e raccolta del dato
 from sensor_implementation.AbstractImplementation import AbstractImplementation
 from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
 import random
@@ -15,8 +14,8 @@ class ImpLuminositySensor(AbstractImplementation):
 
     def get_valore(self):
         data = random.randint(15, 30)
-        data = self.conv(data)
         #data = self.sharedGPIO_ADCReader.readADC(self.PIN)
+        data = self.conv(data)
         return data
 
     def conv(self, data):

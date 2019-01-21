@@ -14,8 +14,8 @@ class ImpNoiseSensor(AbstractImplementation):
 
     def get_valore(self):
         data = random.randint(40, 60)
-        data = self.conv(data)
         #data = self.sharedGPIO_ADCReader.readADC(self.PIN)
+        data = self.conv(data)
         return data
 
     def conv(self, data):

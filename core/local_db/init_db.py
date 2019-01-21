@@ -1,8 +1,11 @@
 import sqlite3
-from setupLamp import setupLamp
+from local_db.setupLamp import setupLamp
 
 def init_db(path):
-    conn = sqlite3.connect(path + "localDB.db")
+
+    absolutePath = path + "localDB.db"
+
+    conn = sqlite3.connect(absolutePath)
 
     conn.execute("CREATE TABLE IF NOT EXISTS Dato ("
                  "timestamp text,"
@@ -31,8 +34,4 @@ def init_db(path):
 
     conn.close()
 
-    setupLamp()
-
-
-if __name__ == "__main__":
-    init_db('')
+    setupLamp(absolutePath)

@@ -1,4 +1,3 @@
-#controllare setup e raccolta del dato
 from sensor_implementation.AbstractImplementation import AbstractImplementation
 from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
 import random

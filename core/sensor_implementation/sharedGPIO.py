@@ -53,7 +53,8 @@ class SharedGPIO_ADCReader:
 
             return self.bus.read_byte(self.addressADC)
         except Exception as e:
-            print("Address: " + self.addressADC)
+            print("Address: " + str(self.addressADC))
+            #gestire eccezione
             print(e)
         finally:
             self.lockADC.release()
@@ -71,7 +72,8 @@ class SharedGPIO_ADCReader:
             # print temp to see on terminal else comment out
             self.bus.write_byte_data(self.addressADC, 0x40, temp)
         except Exception as e:
-            print("Error: Device address: " + self.addressADC)
+            print("Error: Device address: " + str(self.addressADC))
+            #gestire eccezioni
             print(e)
         finally:
             self.lockADC.release()

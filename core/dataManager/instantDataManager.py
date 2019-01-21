@@ -74,15 +74,14 @@ class InstantDataManager(DataManager):
 
     def sendToHive(self):
         #########################################
-        #print("Invio dati grezzi di tutti i sensori ad hive")
         Logger.getInstance().printline("Invio dati grezzi di tutti i sensori ad hive")
         #########################################
         """
         prendo dal db locale le info sul lampione (area,id,geotag)
         """
         info = self.getInfoLamp()
-        #print(info)
         Logger.getInstance().printline(json.dumps(info))
+
         #request = HiveRequestFactory().createRequest().setInfoLamp(info)
         #request.setData(self.data_to_hive_list)
         #request.execute()

@@ -2,7 +2,7 @@ from datetime import datetime
 from logs.logger import Logger
 from elasticsearch import helpers
 from request.es_connection_factory import ESConnectionFactory
-
+from local_db.dbconnection_factory import DBConnectionFactory
 
 class ElaborateData:
 
@@ -12,6 +12,7 @@ class ElaborateData:
         """
         self.elaborate_list = list()
         self.data_list = list()
+        self.idLamp = None
         self.index_ES = 'pre_elaborazione'
 
     def addImplementation(self, impl):
@@ -50,6 +51,9 @@ class ElaborateData:
         Invia i dati appena elaborati ad ES
         :return: None
         """
+        if self.idLamp is None:
+            self.readInfoLamp()
+
         actions = [
             {
                 '_index': self.index_ES,
@@ -66,6 +70,10 @@ class ElaborateData:
         ]
         helpers.bulk(ESConnectionFactory().createConnection(), actions)
 
+    def readInfoLamp(self):
+        connection = DBConnectionFactory().createConnection()
+        for row in connection.execute('SELECT id_lampione FROM Info'):
+            self.idLamp = row[0]
 
     def giornoPrec(self, giorno):
         """

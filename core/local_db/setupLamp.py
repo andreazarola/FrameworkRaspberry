@@ -1,6 +1,5 @@
 from request.es_connection_factory import ESConnectionFactory
 from request.es_request_factory import ES_RequestFactory
-from elasticsearch import Elasticsearch
 import sqlite3
 
 """
@@ -22,7 +21,7 @@ def setupLamp(absolutePath):
 
     setted = False
 
-    for row in conn.execute('SELCT * FROM Info'):
+    for row in conn.execute('SELECT * FROM Info'):
         setted = True
 
     if not setted :
@@ -39,7 +38,7 @@ def setupLamp(absolutePath):
 
 
 def setup_es():
-    es = Elasticsearch()
+    es = ESConnectionFactory().createConnection()
     query = {
         'size': '0',
         'query': {
@@ -48,14 +47,14 @@ def setup_es():
             }
         }
     }
-    response = es.index(doc_type='', body=query)
+    response = es.search(doc_type='', body=query)
     exists = True if response['hits']['total'] == 1 else False
     if not exists:
-        insertLamp()
+        insertLamp(es)
 
 
-def insertLamp():
-    conn = ESConnectionFactory().createConnection()
+def insertLamp(es_conn):
+    conn = es_conn
     req = ES_RequestFactory().createRequest()
     req.initialize().set_connection(conn)
     req.set_index('sensor')

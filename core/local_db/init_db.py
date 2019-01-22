@@ -1,9 +1,10 @@
 import sqlite3
 from local_db.setupLamp import setupLamp
+from config import Config
 
 def init_db(path):
 
-    absolutePath = path + "localDB.db"
+    absolutePath = path + Config.local_db_name
 
     conn = sqlite3.connect(absolutePath)
 
@@ -18,6 +19,7 @@ def init_db(path):
                  "idArea integer,"
                  "latitudine real,"
                  "longitudine real,"
+                 "static_ip text,"
                  "prevLamp integer,"
                  "nextLamp integer )")
 

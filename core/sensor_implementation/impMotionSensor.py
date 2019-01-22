@@ -1,5 +1,5 @@
 from sensor_implementation.AbstractImplementation import AbstractImplementation
-from sensor_implementation.sharedGPIO import SharedGPIO_ADCReader
+from config import Config
 import random
 
 
@@ -10,9 +10,13 @@ class ImpMotionSensor(AbstractImplementation):
         self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        self.sharedGPIO_ADCReader.addInputPIN(self.PIN)
+        if not Config.debug:
+            self.sharedGPIO_ADCReader.addInputPIN(self.PIN)
 
     def get_valore(self):
-        data = random.randint(0, 1)
-        #data = int(self.sharedGPIO_ADCReader.readGPIO(self.PIN))
+        if Config.debug:
+            data = random.randint(0, 1)
+        else:
+            data = random.randint(0, 1)
+            #data = int(self.sharedGPIO_ADCReader.readGPIO(self.PIN))
         return data

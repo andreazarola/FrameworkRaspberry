@@ -59,6 +59,7 @@ class ElaborateData:
                 '_index': self.index_ES,
                 '_type': '_doc',
                 '_source': {
+                    'id_lamp': str(self.idLamp),
                     'type_data': data['tipo_dato'],
                     'value': data['value'],
                     'giorno': data['giorno'],
@@ -71,7 +72,7 @@ class ElaborateData:
         helpers.bulk(ESConnectionFactory().createConnection(), actions)
 
     def readInfoLamp(self):
-        connection = DBConnectionFactory().createConnection()
+        connection = DBConnectionFactory().createConnection("localDB.db")
         for row in connection.execute('SELECT id_lampione FROM Info'):
             self.idLamp = row[0]
 

@@ -1,5 +1,7 @@
 import sqlite3
 import sys
+from config import Config
+
 
 class DBConnectionFactory:
 

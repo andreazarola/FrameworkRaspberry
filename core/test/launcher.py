@@ -46,5 +46,5 @@ class Launcher:
         except KeyboardInterrupt:
             for s in self.sensors:
                 s.closeSensor()
-
-            self.sharedGPIO_ADC.clean()
+            if self.sharedGPIO_ADC is not None:
+                self.sharedGPIO_ADC.clean()

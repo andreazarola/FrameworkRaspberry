@@ -91,8 +91,20 @@ class SharedGPIO_ADCReader:
         :param pin: pin da inizializzare come output
         """
         if pin not in self.inputPIN and pin not in self.outputPIN:
-            self.inputPIN.append(pin)
-            GPIO.setup(pin, GPIO.IN)
+            self.outputPIN.append(pin)
+            GPIO.setup(pin, GPIO.OUT)
+
+    def get_pwm_pin(self, pin):
+        """
+        Dato un pin come parametro restituisce un oggetto PWM su cui cambiare la frequenza
+        :param pin: pin da usare per PWM
+        :return: oggetto pwm per controllare la frequenza sul pin
+        """
+        if pin in self.outputPIN:
+            pwm = GPIO.PWM(12, 100)  # Initialize PWM on pwmPin 100Hz frequency
+            pwm.start(0)
+            return pwm
+        return None
 
     def readGPIO(self, pin):
         """

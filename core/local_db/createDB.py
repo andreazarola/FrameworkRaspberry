@@ -26,6 +26,15 @@ conn.execute("CREATE TABLE IF NOT EXISTS Pre_elaborato ("
              "timestamp text,"
              "primary key (tipo, giorno, ora))")
 
+"""timestamp --> si riferisce al timestamp ricevuto, cioè quando e stato generato il timestamp sul server"""
+"""timestamp_ricezione --> si riferisce al timestamp di quando e stato l'alert dal listener"""
+conn.execute("CREATE TABLE IF NOT EXISTS Alert ("
+             "id integer primary key autoincrement, "
+             "tipo text,"
+             "timestamp text,"
+             "timestamp_ricezione text,"
+             "eseguito integer default 0)")
+
 conn.commit()
 
 conn.close()

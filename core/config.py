@@ -4,9 +4,9 @@
 class Config:
 
     """indirizzo es da remoto"""
-    es_host1 = [{'host': '192.168.1.22', 'port': 9200}]
+    es_host = [{'host': '192.168.1.22', 'port': 9200}]
 
-    es_host = [{'host': '192.168.43.16', 'port': 9200}]
+    es_host1 = [{'host': '192.168.43.16', 'port': 9200}]
 
     """nome db locale"""
     local_db_name = 'localDB.db'

@@ -2,6 +2,9 @@ from dataManager.instantDataManager import InstantDataManager
 from pre_elaborazione.elaborate_data import ElaborateData
 from apscheduler.schedulers.background import BackgroundScheduler
 from base.lamp_manager import LampManager
+from alert_listener.listener import AlertListener
+from alert_listener.alert_queue import AlertQueue
+from alert_listener.alert_executor import AlertExecutor
 import time
 
 
@@ -16,6 +19,9 @@ class Launcher:
         self.triggerMinute = 0
         self.sharedGPIO_ADC = None
         self.lamp_manager = LampManager.getInstance(self.sharedGPIO_ADC)
+        self.alert_listener = AlertListener()
+        self.alert_queue = AlertQueue.get_instance()
+        self.alert_executor = AlertExecutor(self.alert_queue)
 
     def setGPIO_ADC(self, GPIO_ADC):
         self.sharedGPIO_ADC = GPIO_ADC
@@ -35,6 +41,9 @@ class Launcher:
             s.setup()
 
         self.lamp_manager.setup()
+
+        self.alert_listener.start()
+        self.alert_executor.start()
 
         try:
             for s in self.sensors:

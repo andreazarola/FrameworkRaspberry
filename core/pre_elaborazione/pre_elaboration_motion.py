@@ -46,7 +46,7 @@ class PreElaborationMotion(AbstractPreElaboration):
                                        " alle ore " + str(ora) + ": " + str(self.value))
 
     def get_info(self):
-        conn = DBConnectionFactory().createConnection("localDB.db")
+        conn = DBConnectionFactory.create_connection()
         numCampioni = 0
         value = 0
         for row in conn.execute("SELECT numCampioni, valore "
@@ -63,7 +63,7 @@ class PreElaborationMotion(AbstractPreElaboration):
         Salva o aggiorna il valore elaborato sul db locale
         :return: il documento da inviare ad ES
         """
-        conn = DBConnectionFactory().createConnection("localDB.db")
+        conn = DBConnectionFactory.create_connection()
         exist = False
         for row in conn.execute("SELECT * "
                                 "FROM Pre_elaborato "
@@ -85,7 +85,7 @@ class PreElaborationMotion(AbstractPreElaboration):
 
         return {
                 'tipo_dato': self.tipo,
-                'value': self.value,
+                'value': str(round(self.value, 3)),
                 'giorno': str(self.lastDay),
                 'ora': str(self.lastHour),
                 'timestamp': self.timestamp

@@ -11,7 +11,7 @@ def regexp(expr, item):
 class DBRequestData:
 
     def __init__(self):
-        self.conn = DBConnectionFactory().createConnection("localDB.db")
+        self.conn = DBConnectionFactory.create_connection()
         self.tipo = None
         self.hour = None
         self.weekDay = None

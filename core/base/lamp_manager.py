@@ -3,6 +3,10 @@ from logs.logger import Logger
 from threading import Lock
 
 
+MAX_DC = 100
+MIN_DC = 0
+
+
 class LampManager:
 
     __instance = None
@@ -29,10 +33,11 @@ class LampManager:
         try:
             self.interal_lock.acquire()
 
-            self.current_dc = self.current_dc + dc
-            if not Config.debug and self.sharedGPIO_ADCReader is not None:
-                self.lamp_controller.ChangeDutyCycle(self.current_dc)
-            Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))
+            if MIN_DC <= (dc + self.current_dc) >= MAX_DC:
+                self.current_dc = self.current_dc + dc
+                if not Config.debug and self.sharedGPIO_ADCReader is not None:
+                    self.lamp_controller.ChangeDutyCycle(self.current_dc)
+                Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))
 
             self.interal_lock.release()
         except Exception as e:
@@ -42,10 +47,11 @@ class LampManager:
         try:
             self.interal_lock.acquire()
 
-            if not Config.debug and self.sharedGPIO_ADCReader is not None:
-                self.lamp_controller.ChangeDutyCycle(dc)
-            self.current_dc = dc
-            Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))
+            if MIN_DC <= dc >= MAX_DC:
+                if not Config.debug and self.sharedGPIO_ADCReader is not None:
+                    self.lamp_controller.ChangeDutyCycle(dc)
+                self.current_dc = dc
+                Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))
 
             self.interal_lock.release()
         except Exception as e:

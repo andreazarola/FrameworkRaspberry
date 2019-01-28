@@ -1,8 +1,9 @@
 from abc import ABC,abstractmethod
 
+
 class AbstractImplementation(ABC):
 
-    def __init__(self,PIN):
+    def __init__(self, PIN):
         self.PIN = PIN
 
     @abstractmethod

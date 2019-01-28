@@ -1,5 +1,6 @@
 from request.abstract_request import Request
 from elasticsearch import ElasticsearchException as ESException
+from logs.logger import Logger
 
 
 class ES_SendRequest(Request):
@@ -33,7 +34,7 @@ class ES_SendRequest(Request):
         try:
             self.response = self.connection.index(self.index, doc_type='_doc', body=self.doc)
         except ESException as e:
-            print(e)
+            Logger.getInstance().printline(str(e))
 
     def get_response(self):
         return self.response

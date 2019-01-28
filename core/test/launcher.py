@@ -5,6 +5,7 @@ from base.lamp_manager import LampManager
 from alert_listener.listener import AlertListener
 from alert_listener.alert_queue import AlertQueue
 from alert_listener.alert_executor import AlertExecutor
+from logs.logger import Logger
 import time
 
 
@@ -41,7 +42,6 @@ class Launcher:
             s.setup()
 
         self.lamp_manager.setup()
-
         self.alert_listener.start()
         self.alert_executor.start()
 
@@ -52,6 +52,8 @@ class Launcher:
             self.scheduler.add_job(self.elaborateManager.update, 'cron', minute=self.triggerMinute, second=self.triggerSecond)
 
             self.scheduler.start()
+
+            Logger.getInstance().printline("Started")
 
             while True:
                 time.sleep(1)

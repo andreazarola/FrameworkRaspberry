@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import smbus
 from threading import Lock
+from logs.logger import Logger
 
 
 class SharedGPIO_ADCReader:
@@ -53,9 +54,9 @@ class SharedGPIO_ADCReader:
 
             return self.bus.read_byte(self.addressADC)
         except Exception as e:
-            print("Address: " + str(self.addressADC))
+            Logger.getInstance().printline("Address: " + str(self.addressADC))
             #gestire eccezione
-            print(e)
+            Logger.getInstance().printline("Exception in SharedGPIO_ADCReader")
         finally:
             self.lockADC.release()
 
@@ -72,9 +73,9 @@ class SharedGPIO_ADCReader:
             # print temp to see on terminal else comment out
             self.bus.write_byte_data(self.addressADC, 0x40, temp)
         except Exception as e:
-            print("Error: Device address: " + str(self.addressADC))
-            #gestire eccezioni
-            print(e)
+            Logger.getInstance().printline("Address: " + str(self.addressADC))
+            # gestire eccezione
+            Logger.getInstance().printline("Exception in SharedGPIO_ADCReader")
         finally:
             self.lockADC.release()
 

@@ -3,12 +3,13 @@ from datetime import datetime
 from alert_listener.alert_queue import AlertQueue
 from local_db.dbconnection_factory import DBConnectionFactory
 import json
+from logs.logger import Logger
 
 
 class ConnectionHandler(BaseRequestHandler):
 
     def handle(self):
-        print("From " + str(self.client_address[0]))
+        Logger.getInstance().printline("From " + str(self.client_address[0]))
 
         """socket usata per comunicare con il client"""
         recv_sock = self.request
@@ -24,7 +25,7 @@ class ConnectionHandler(BaseRequestHandler):
 
     """gestione dell'alert"""
     def save_alert_on_db(self):
-        conn = DBConnectionFactory().createConnection("localDB.db")
+        conn = DBConnectionFactory.create_connection()
         cursor = conn.cursor()
         cursor.execute('INSERT INTO Alert (tipo, timestamp, timestamp_ricezione) values (?, ?, ?)',
                        (self.alert['tipo_alert'], self.alert['timestamp'], self.alert['timestamp_ricezione']))

@@ -72,7 +72,7 @@ class ElaborateData:
         helpers.bulk(ESConnectionFactory().createConnection(), actions)
 
     def readInfoLamp(self):
-        connection = DBConnectionFactory().createConnection("localDB.db")
+        connection = DBConnectionFactory.create_connection()
         for row in connection.execute('SELECT id_lampione FROM Info'):
             self.idLamp = row[0]
 

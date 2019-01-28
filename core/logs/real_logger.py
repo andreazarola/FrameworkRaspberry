@@ -1,5 +1,6 @@
 from logs.abstract_logger import AbstractLogger
 from threading import Lock
+from datetime import datetime
 
 
 class RealLogger(AbstractLogger):
@@ -15,7 +16,8 @@ class RealLogger(AbstractLogger):
             self.locker_log.acquire()
 
             f = open(self.log_file, "a+")
-            f.write(line + "\n")
+            time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+            f.write('[' + time + ']\t' + line + "\n")
             f.close()
 
         except IOError:

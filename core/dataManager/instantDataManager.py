@@ -93,7 +93,7 @@ class InstantDataManager(DataManager):
         pass
 
     def getInfoLamp(self):
-        connection = DBConnectionFactory().createConnection("localDB.db")
+        connection = DBConnectionFactory.create_connection()
         cursor = connection.cursor()
         cursor.execute("SELECT * "
                        "FROM Info")
@@ -105,8 +105,6 @@ class InstantDataManager(DataManager):
                     "lat": row[2],
                     "lon": row[3]}
         except TypeError:
-            #print("Dati non inviati esternamente")
-            #print("Necessario settare info sul dispositivo")
             Logger.getInstance().printline("Dati non inviati esternamente")
             Logger.getInstance().printline("Necessario settare info sul dispositivo")
 

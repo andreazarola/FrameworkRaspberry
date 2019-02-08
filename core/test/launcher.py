@@ -19,13 +19,14 @@ class Launcher:
         self.triggerSecond = 0
         self.triggerMinute = 0
         self.sharedGPIO_ADC = None
-        self.lamp_manager = LampManager.getInstance(self.sharedGPIO_ADC)
+        self.lamp_manager = None
         self.alert_listener = AlertListener()
         self.alert_queue = AlertQueue.get_instance()
-        self.alert_executor = AlertExecutor(self.alert_queue)
+        self.alert_executor = None
 
     def setGPIO_ADC(self, GPIO_ADC):
         self.sharedGPIO_ADC = GPIO_ADC
+        self.lamp_manager = LampManager.getInstance(self.sharedGPIO_ADC)
 
     def aggiungiSensore(self, sensore):
         self.sensors.append(sensore)
@@ -40,6 +41,8 @@ class Launcher:
 
         for s in self.sensors:
             s.setup()
+
+        self.alert_executor = AlertExecutor(self.alert_queue, self.lamp_manager)
 
         self.lamp_manager.setup()
         self.alert_listener.start()

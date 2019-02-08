@@ -38,10 +38,16 @@ class MaxLightAlert(AbstractAlert):
     il lampione alla massima intensita.
     """
 
-    def handle(self):
+    def handle(self, lamp):
         Logger.getInstance().printline("Luce massima lampione")
-        lamp = LampManager.getInstance()
         lamp.set_dc(MAX_DC)
+
+
+class MinLightAlert(AbstractAlert):
+
+    def handle(self, lamp):
+        Logger.getInstance().printline("Luce minima lampione")
+        lamp.set_dc(MIN_DC)
 
 
 class UnknownAlert(Exception):

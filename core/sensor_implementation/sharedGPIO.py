@@ -102,8 +102,10 @@ class SharedGPIO_ADCReader:
         :return: oggetto pwm per controllare la frequenza sul pin
         """
         if pin in self.outputPIN:
-            pwm = GPIO.PWM(12, 100)  # Initialize PWM on pwmPin 100Hz frequency
-            pwm.start(0)
+            pwm = GPIO.PWM(pin, 100)  # Initialize PWM on pwmPin 100Hz frequency
+            print("get_pwm")
+            pwm.start(10)
+            print("start 0")
             return pwm
         return None
 

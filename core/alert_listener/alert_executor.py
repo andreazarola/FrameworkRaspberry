@@ -1,5 +1,5 @@
 from threading import Thread
-from alert_listener.alert import ResetDataAlert, MaxLightAlert, UnknownAlert
+from alert_listener.alert import ResetDataAlert, MaxLightAlert, MinLightAlert, UnknownAlert
 from local_db.dbconnection_factory import DBConnectionFactory
 from logs.logger import Logger
 import json
@@ -11,9 +11,10 @@ class AlertExecutor(Thread):
     dalla coda di alert e di invocarne l'esecuzione
     """
 
-    def __init__(self, alert_queue):
+    def __init__(self, alert_queue, lamp_manager):
         super(AlertExecutor, self).__init__()
         self.queue = alert_queue
+        self.lamp_manager = lamp_manager
         self.last_alert_time = None
 
     def run(self):
@@ -35,7 +36,9 @@ class AlertExecutor(Thread):
         if tipo == 'reset_dati':
             ResetDataAlert(alert).handle()
         elif tipo == 'max_light':
-            MaxLightAlert(alert).handle()
+            MaxLightAlert(alert).handle(self.lamp_manager)
+        elif tipo == 'min_light':
+            MinLightAlert(alert).handle(self.lamp_manager)
         else:
             raise UnknownAlert("Tipo di alert non riconosciuto")
 

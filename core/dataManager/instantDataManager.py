@@ -44,14 +44,14 @@ class InstantDataManager(DataManager):
             data = dataElement(sensore.tipoSensore, sensore.state, sensore.lastTime)
 
             if not self.contenuto(data):
-                #######################################################
-                # Salvataggio del dato sul db locale
+                """
+                Salvataggio del dato sul db locale
+                """
                 request = DBRequestFactory().createRequest().initialize()
                 request.setTimeStamp(sensore.lastTime)
                 request.setTipoDato(sensore.tipoSensore)
                 request.setValue(sensore.state)
                 request.execute()
-                #######################################################
 
                 """aggiunta del dato alla lista dei dati da inviare"""
                 self.data_to_hive_list.append(data)
@@ -73,18 +73,17 @@ class InstantDataManager(DataManager):
         return False
 
     def sendToHive(self):
-        #########################################
         Logger.getInstance().printline("Invio dati grezzi di tutti i sensori ad hive")
-        #########################################
         """
-        prendo dal db locale le info sul lampione (area,id,geotag)
+        prendo dal db locale le info sul lampione
         """
         info = self.getInfoLamp()
         Logger.getInstance().printline(json.dumps(info))
 
-        #request = HiveRequestFactory().createRequest().setInfoLamp(info)
-        #request.setData(self.data_to_hive_list)
-        #request.execute()
+        request = HiveRequestFactory().createRequest().setInfoLamp(info)
+        request.setData(self.data_to_hive_list)
+        request.setTableName("Data")
+        request.execute()
 
         """
         resetto la lista di dati da mandare dopo che la mando ad hive
@@ -95,15 +94,16 @@ class InstantDataManager(DataManager):
     def getInfoLamp(self):
         connection = DBConnectionFactory.create_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT * "
+        cursor.execute("SELECT id_lampione, idArea, latitudine, longitudine, static_ip "
                        "FROM Info")
         info = None
         try:
             row = cursor.fetchone()
             info = {"idLamp": row[0],
-                    "area": row[1],
+                    "idArea": row[1],
                     "lat": row[2],
-                    "lon": row[3]}
+                    "lon": row[3],
+                    "static_ip": row[4]}
         except TypeError:
             Logger.getInstance().printline("Dati non inviati esternamente")
             Logger.getInstance().printline("Necessario settare info sul dispositivo")

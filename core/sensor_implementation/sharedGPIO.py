@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import smbus
 from threading import Lock
 from logs.logger import Logger
+import sys
 
 
 class SharedGPIO_ADCReader:
@@ -55,8 +56,9 @@ class SharedGPIO_ADCReader:
             return self.bus.read_byte(self.addressADC)
         except Exception as e:
             Logger.getInstance().printline("Address: " + str(self.addressADC))
-            #gestire eccezione
             Logger.getInstance().printline("Exception in SharedGPIO_ADCReader")
+            Logger.getInstance().printline("Chiusura del framework")
+            sys.exit(1)
         finally:
             self.lockADC.release()
 

@@ -36,7 +36,6 @@ class LampManager:
             if (dc + self.current_dc) >= MIN_DC and (dc + self.current_dc) <= MAX_DC:
                 self.current_dc = self.current_dc + dc
                 if not Config.debug and self.sharedGPIO_ADCReader is not None:
-                    print("sto modificando valore dc")
                     self.lamp_controller.ChangeDutyCycle(self.current_dc)
                 Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))
 
@@ -48,11 +47,8 @@ class LampManager:
         try:
             self.internal_lock.acquire()
 
-            if self.sharedGPIO_ADCReader is None:
-                print("sharedGPIOadc is None")
             if dc >= MIN_DC and dc <= MAX_DC:
                 if not Config.debug and self.sharedGPIO_ADCReader is not None:
-                    print("sto modificando valore dc")
                     self.lamp_controller.ChangeDutyCycle(dc)
                 self.current_dc = dc
                 Logger.getInstance().printline("New dc of lamp: " + str(self.current_dc))

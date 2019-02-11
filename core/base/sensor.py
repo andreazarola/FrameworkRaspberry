@@ -23,12 +23,10 @@ class Sensore(ABC):
     def getData(self):
         self.state = self.implementation.get_valore()
         self.lastTime = datetime.now().strftime("%A, %d. %B %Y %H:%M")
-        ######################################
-        #print("Tempo cattura del dato di " + self.tipoSensore + ": " + str(self.state))
-        Logger.getInstance().printline("Tempo cattura del dato di " + self.tipoSensore + ": " + str(self.state))
-        #print(self.lastTime)
-        Logger.getInstance().printline(self.lastTime)
-        ######################################
+
+        Logger.getInstance().printline("Tempo cattura del dato di " + self.tipoSensore + ": " + self.lastTime +
+                                       ",\t valore:" + str(self.state))
+
         self.notify()
 
     def notify(self):

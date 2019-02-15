@@ -1,6 +1,6 @@
 from logs.abstract_logger import AbstractLogger
 from logs.real_logger import RealLogger
-from datetime import datetime, timezone
+from datetime import datetime
 
 
 class Logger(AbstractLogger):

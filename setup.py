@@ -12,5 +12,6 @@ setup(name='framework',
             'apscheduler',
             'thrift',
             'pyhive',
+            'flask'
       ],
       zip_safe=False)

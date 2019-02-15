@@ -45,3 +45,7 @@ class Config:
     nextLamp = None
     """ prevLamp = None -> è il primo lampione dell'area """
     """ nextLamp = None -> è l'ultimo lampione dell'area """
+
+    """periodo di riferimento per calcolare la media"""
+    """per sapere il numero di campioni (pre_elaboration_interval * 24 *60)"""
+    day = 30

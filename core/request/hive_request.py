@@ -28,7 +28,7 @@ class HiveRequest(Request):
         pass
 
     def execute(self):
-        insert = ("INSERT INTO TABLE " + self.tableName + " ")
+        insert = ("INSERT INTO TABLE " + self.tableName + " VALUES  ")
         rows = list()
         for data in self.dataList:
             rows.append(("(\'" + data.tipo + "\', " + str(data.valore) + ", \'" + data.timestamp + "\', " +

@@ -1,8 +1,9 @@
 from elasticsearch import Elasticsearch
-from config import Config
+from configuration.configuration_handler import ConfigurationHandler
 
 
 class ESConnectionFactory:
 
     def createConnection(self):
-        return Elasticsearch(Config.es_host)
+        return Elasticsearch([{'host': ConfigurationHandler.get_instance().get_param('es_host_ip'),
+                              'port': ConfigurationHandler.get_instance().get_param('es_host_port')}])

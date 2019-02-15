@@ -36,7 +36,7 @@ def init_db(path):
     """timestamp_ricezione --> si riferisce al timestamp di quando e stato l'alert dal listener"""
     conn.execute("CREATE TABLE IF NOT EXISTS Alert ("
                  "id integer primary key autoincrement, "
-                 "tipo text,"
+                 "tipo text,"   
                  "timestamp text,"
                  "timestamp_ricezione text,"
                  "eseguito integer default 0)")

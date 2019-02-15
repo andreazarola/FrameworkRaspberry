@@ -1,6 +1,7 @@
 from pre_elaborazione.abstract_pre_elaboration import AbstractPreElaboration
 from pre_elaborazione.db_requestdatafactory import DBRequestDataFactory
 from local_db.dbconnection_factory import DBConnectionFactory
+from configuration.configuration_handler import ConfigurationHandler
 from logs.logger import Logger
 
 
@@ -32,16 +33,22 @@ class PreElaborationNoise(AbstractPreElaboration):
 
         info = self.get_info()
 
-        count += info[0]
+        nCampioni = ConfigurationHandler.get_instance().get_param('nCampioniRiferimento')
 
-        lastSum += int(round(info[1]))
+        if info['numCampioni'] > (nCampioni * 60):
+            media = (round(info['valore_corrente'] * (nCampioni * 60)) + lastSum) / ((nCampioni + 1) * 60)
+            self.nCampioni = (nCampioni + 1) * 60
+            self.value = media
+        elif info['numCampioni'] < (nCampioni * 60):
+            media = ((round(info['valore_corrente'] * info['numCampioni'])) + lastSum) / (info['numCampioni'] + count)
+            self.nCampioni = info['numCampioni'] + count
+            self.value = media
+        else:
+            count += info['numCampioni']
+            lastSum += int(round(info['valore_corrente'] * info['numCampioni']))
+            self.value = float(lastSum / count)
+            self.nCampioni = count
 
-        self.value = float(lastSum/count)
-
-        self.nCampioni = info[0]
-
-        #print("Valore medio di " + self.tipo + " di " + giorno +
-        #      " alle ore " + str(ora) + ": " + str(self.value))
         Logger.getInstance().printline("Valore medio di " + self.tipo + " di " + giorno +
                                        " alle ore " + str(ora) + ": " + str(self.value))
 
@@ -56,7 +63,7 @@ class PreElaborationNoise(AbstractPreElaboration):
             numCampioni = row[0]
             value = row[1]
         conn.close()
-        return numCampioni, numCampioni*value
+        return {'numCampioni': numCampioni, 'valore_corrente': value}
 
     def save_localdb(self):
         """

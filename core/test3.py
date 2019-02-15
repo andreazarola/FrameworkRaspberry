@@ -10,8 +10,21 @@ from pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
 from pre_elaborazione.pre_elaboration_motion import PreElaborationMotion
 from pre_elaborazione.pre_elaboration_lum import PreElaborationLum
 from logs.logger import Logger
+from configuration.configuration_handler import ConfigurationHandler
+from config_server import ConfigurationServer
 from config import Config
 import sys
+
+
+def load_configs():
+    path = sys.path[0]
+    config_file = path + '/configuration_file'
+    file = open(config_file, 'r')
+
+    conf_handler = ConfigurationHandler.get_instance(config_file)
+
+    for line in file.readlines()[1:]:
+        conf_handler.add_param(line.rstrip())
 
 
 def main():
@@ -60,5 +73,8 @@ def main_debug():
 
 
 if __name__ == "__main__":
-
+    load_configs()
+    conf_server = ConfigurationServer()
+    conf_server.start()
     main() if not Config.debug else main_debug()
+

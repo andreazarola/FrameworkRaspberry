@@ -1,12 +1,12 @@
 from pyhive import hive
-from config import Config
+from configuration.configuration_handler import ConfigurationHandler
 
 
 class HiveConnectionFactory:
 
     def createConnection(self):
-        return hive.connect(host=Config.hive_connection['host_name'],
-                            port=Config.hive_connection['port'],
-                            username=Config.hive_connection['user'],
-                            password=Config.hive_connection['password'],
-                            database=Config.hive_connection['db_name'])
+        return hive.connect(host=ConfigurationHandler.get_param('hive_connection_ip'),
+                            port=ConfigurationHandler.get_param('hive_connection_port'),
+                            username=ConfigurationHandler.get_param('hive_connection_user'),
+                            password=ConfigurationHandler.get_param('hive_connection_password'),
+                            database=ConfigurationHandler.get_param('hive_db_name'))

@@ -19,8 +19,12 @@ class Sensore(ABC):
         """
         self.observer.attach_sensor(self.tipoSensore)
 
-    #funzione da schedulare
+
     def getData(self):
+        """
+        Metodo che viene schedulata
+        :return:
+        """
         self.state = self.implementation.get_valore()
         self.lastTime = datetime.now().strftime("%A, %d. %B %Y %H:%M")
 

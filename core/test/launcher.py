@@ -6,6 +6,7 @@ from alert_listener.listener import AlertListener
 from alert_listener.alert_queue import AlertQueue
 from alert_listener.alert_executor import AlertExecutor
 from logs.logger import Logger
+from local_db.clean_old_data import clean_old_data
 import time
 
 
@@ -44,7 +45,7 @@ class Launcher:
 
         self.alert_executor = AlertExecutor(self.alert_queue, self.lamp_manager)
 
-        self.lamp_manager.setup()
+        #self.lamp_manager.setup()
         self.alert_listener.start()
         self.alert_executor.start()
 
@@ -53,7 +54,7 @@ class Launcher:
                 self.scheduler.add_job(s.getData, 'cron', second=self.triggerSecond)
 
             self.scheduler.add_job(self.elaborateManager.update, 'cron', minute=self.triggerMinute, second=self.triggerSecond)
-
+            self.scheduler.add_job(clean_old_data, 'cron', minute=0, second=0, hour=23)
             self.scheduler.start()
 
             Logger.getInstance().printline("Started")

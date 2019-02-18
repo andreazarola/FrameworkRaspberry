@@ -1,5 +1,6 @@
 from request.abstract_request import Request
 from local_db.dbconnection_factory import DBConnectionFactory
+from request.id_sequence import SequenzaId
 import sqlite3
 from logs.logger import Logger
 
@@ -34,8 +35,9 @@ class DBRequest(Request):
             raise Exception ("Non sono stati settati tutti i campi della richiesta")
 
         try:
-            self.conn.execute("INSERT INTO Dato values (?,?,?)",
-                              (str(self.TimeStamp),
+            self.conn.execute("INSERT INTO Dato values (?,?,?,?)",
+                              (SequenzaId.get_instance().get_id(),
+                               str(self.TimeStamp),
                                self.tipoDato,
                                float(self.value)))
             self.done()

@@ -13,7 +13,7 @@ def index():
 
 
 @routes.route('/getConfiguration', methods=['POST',])
-def getConfiguration():
+def get_configuration():
     r = make_response()
     data = ConfigurationHandler.get_instance().get_all()
     json_data = list()
@@ -22,4 +22,14 @@ def getConfiguration():
                     'Tipo': d.get_tipo(),
                     'Valore': d.get_valore()})
     r = json.jsonify(json_data)
+    return r
+
+@routes.route('/setConfiguration', methods=['POST'])
+def setConfiguration():
+    nome = request.args.get("nome")
+    valore = request.args.get("valore")
+    ConfigurationHandler.get_instance().set_param(nome, valore)
+    print(nome + valore)
+    r = make_response()
+    r.data = "ok"
     return r

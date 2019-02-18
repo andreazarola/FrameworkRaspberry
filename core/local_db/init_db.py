@@ -9,10 +9,10 @@ def init_db(path):
     conn = sqlite3.connect(absolutePath)
 
     conn.execute("CREATE TABLE IF NOT EXISTS Dato ("
+                 "id integer primary key,"
                  "timestamp text,"
                  "tipo text,"
-                 "dato real,"
-                 "primary key(timestamp,tipo))")
+                 "dato real)")
 
     conn.execute("CREATE TABLE IF NOT EXISTS Info ("
                  "id_lampione integer primary_key,"
@@ -36,7 +36,8 @@ def init_db(path):
     """timestamp_ricezione --> si riferisce al timestamp di quando e stato l'alert dal listener"""
     conn.execute("CREATE TABLE IF NOT EXISTS Alert ("
                  "id integer primary key autoincrement, "
-                 "tipo text,"   
+                 "tipo text,"
+                 "valore integer,"
                  "timestamp text,"
                  "timestamp_ricezione text,"
                  "eseguito integer default 0)")

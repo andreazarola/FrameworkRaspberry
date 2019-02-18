@@ -12,7 +12,7 @@ class ImpMotionSensor(AbstractImplementation):
         self.sharedGPIO_ADCReader = GPIO_ADC
 
     def setup(self):
-        """il sendore di movimento ha bisogno di circa un minuto per il setup iniziale"""
+        """il sensore di movimento ha bisogno di circa un minuto per il setup iniziale"""
         if not Config.debug:
             self.sharedGPIO_ADCReader.addInputPIN(self.PIN)
             Logger.getInstance().printline("Setup iniziale motion sensor in corso")

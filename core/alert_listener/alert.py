@@ -50,5 +50,12 @@ class MinLightAlert(AbstractAlert):
         lamp.set_dc(MIN_DC)
 
 
+class SetLightAlert(AbstractAlert):
+
+    def handle(self, lamp,):
+        Logger.getInstance().printline("Settato luce a: " + str(self.info['valore']))
+        lamp.set_dc(int(self.info['valore']))
+
+
 class UnknownAlert(Exception):
     pass

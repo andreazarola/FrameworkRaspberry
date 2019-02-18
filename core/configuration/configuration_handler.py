@@ -90,6 +90,7 @@ class ConfigurationHandler:
                 f.write(p.get_nome() + ',' + p.get_tipo() + ',' + str(p.get_valore()) + '\n')
             f.flush()
             f.close()
+            print("File salvato")
         except Exception as e:
             print(e)
         finally:

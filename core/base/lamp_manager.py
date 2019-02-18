@@ -1,4 +1,5 @@
 from config import Config
+from sensor_implementation.AbstractImplementation import AbstractImplementation
 from logs.logger import Logger
 from threading import Lock
 
@@ -7,7 +8,7 @@ MAX_DC = 100
 MIN_DC = 1
 
 
-class LampManager:
+class LampManager(AbstractImplementation):
 
     __instance = None
 
@@ -56,3 +57,6 @@ class LampManager:
             self.internal_lock.release()
         except Exception as e:
             Logger.getInstance().printline(str(e))
+
+    def get_valore(self):
+        return self.current_dc

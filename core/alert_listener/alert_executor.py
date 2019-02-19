@@ -1,5 +1,5 @@
 from threading import Thread
-from alert_listener.alert import ResetDataAlert, MaxLightAlert, MinLightAlert, SetLightAlert, UnknownAlert
+from alert_listener.alert import ResetDataAlert, MaxLightAlert, MinLightAlert, SetLightAlert, SetSafetyAlert, UnknownAlert
 from local_db.dbconnection_factory import DBConnectionFactory
 from logs.logger import Logger
 import json
@@ -41,6 +41,8 @@ class AlertExecutor(Thread):
             MinLightAlert(alert).handle(self.lamp_manager)
         elif tipo == 'set_light':
             SetLightAlert(alert).handle(self.lamp_manager)
+        elif tipo == 'set_safety':
+            SetSafetyAlert(alert).handle()
         else:
             raise UnknownAlert("Tipo di alert non riconosciuto")
 

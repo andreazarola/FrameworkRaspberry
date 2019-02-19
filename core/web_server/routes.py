@@ -2,6 +2,8 @@ from flask import Blueprint
 from flask import request
 from flask import make_response
 from configuration.configuration_handler import ConfigurationHandler
+from base.lamp_manager import LampManager
+from configuration.configuration_handler import ConfigurationHandler
 from flask import json
 
 routes = Blueprint('urls', __name__)
@@ -33,3 +35,13 @@ def setConfiguration():
     r = make_response()
     r.data = "ok"
     return r
+
+
+@routes.route('/getDefaultAlertValue', methods=['POST'])
+def getDefaultAlertValues():
+    light = LampManager.getInstance().get_valore()
+    safety = ConfigurationHandler.get_instance().get_param('livello_sicurezza')
+    data = {'led': light, 'safety': safety}
+    r = json.jsonify(data)
+    return r
+

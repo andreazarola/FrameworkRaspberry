@@ -41,10 +41,18 @@ class ConfigurationHandler:
                 if param.get_valore() == "NULL":
                     return ""
                 return param.get_valore()
-            else:
-                if param.get_valore == "NULL":
+            elif param.get_tipo() == "number":
+                if param.get_valore() == "NULL":
                     return 0
-                return int(param.get_valore())
+                else:
+                    return int(param.get_valore())
+            elif param.get_tipo() == "real":
+                if param.get_valore() == "NULL":
+                    return 0
+                else:
+                    return float(param.get_valore())
+            else:
+                return param.get_valore()
         except Exception as e:
             print(e)
         finally:
@@ -75,9 +83,6 @@ class ConfigurationHandler:
         pass
 
     def get_hive_params(self):
-        pass
-
-    def get_all_params(self):
         pass
 
     def save_config(self):

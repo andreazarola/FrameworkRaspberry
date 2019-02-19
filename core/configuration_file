@@ -7,5 +7,5 @@ hive_connection_port,number,10000
 hive_connection_user,text,hive
 hive_connection_password,text,NULL
 hive_db_name,text,default
-livello_sicurezza,number,50
+livello_sicurezza,real,0.2
 lamp_pin,number,18

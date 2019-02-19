@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from local_db.dbconnection_factory import DBConnectionFactory
+from configuration.configuration_handler import ConfigurationHandler
 from base.lamp_manager import LampManager, MAX_DC, MIN_DC
 from logs.logger import Logger
 
@@ -52,9 +53,16 @@ class MinLightAlert(AbstractAlert):
 
 class SetLightAlert(AbstractAlert):
 
-    def handle(self, lamp,):
+    def handle(self, lamp):
         Logger.getInstance().printline("Settato luce a: " + str(self.info['valore']))
-        lamp.set_dc(int(self.info['valore']))
+        lamp.set_dc(int(float(self.info['valore'])))
+
+
+class SetSafetyAlert(AbstractAlert):
+
+    def handle(self):
+        Logger.getInstance().printline("Settato livello sicurezza a: " + str(self.info['valore']))
+        ConfigurationHandler.get_instance().set_param('livello_sicurezza', self.info['valore'])
 
 
 class UnknownAlert(Exception):

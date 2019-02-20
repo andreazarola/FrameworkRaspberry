@@ -1,5 +1,5 @@
 from request.abstract_request import Request
-#from request.HiveConnectionFactory import HiveConnectionFactory
+from request.HiveConnectionFactory import HiveConnectionFactory
 from logs.logger import Logger
 
 
@@ -7,7 +7,11 @@ class HiveRequest(Request):
 
     def __init__(self):
         super(HiveRequest, self).__init__()
-    #    self.connection = HiveConnectionFactory().createConnection()
+        self.connection = None
+        try:
+            self.connection = HiveConnectionFactory.create_connection()
+        except Exception as e:
+            Logger.getInstance().printline(str(e))
         self.info = None
         self.dataList = None
         self.tableName = None
@@ -28,11 +32,17 @@ class HiveRequest(Request):
         pass
 
     def execute(self):
-        insert = ("INSERT INTO TABLE " + self.tableName + " VALUES  ")
+        insert = ("INSERT INTO TABLE " + self.tableName + " VALUES ")
         rows = list()
         for data in self.dataList:
-            rows.append(("(\'" + data.tipo + "\', " + str(data.valore) + ", \'" + data.timestamp + "\', " +
-                         str(self.info['idLamp']) + ")"))
+            rows.append(("(" + str(self.info['idLamp']) + ", \'" + data.tipo + "\', " + str(data.valore) +
+                         ", \'" + data.timestamp + "\')"))
         insert = insert + (", ".join(rows))
-        Logger.getInstance().printline(insert)
-        pass
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(insert)
+        except Exception as e:
+            Logger.getInstance().printline(str(e))
+
+    def close_connection(self):
+        self.connection.close()

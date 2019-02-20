@@ -19,6 +19,7 @@ class Launcher:
         self.scheduler = BackgroundScheduler()
         self.triggerSecond = 0
         self.triggerMinute = 0
+        self.max_late_allowed = 10
         self.sharedGPIO_ADC = None
         self.lamp_manager = None
         self.alert_listener = AlertListener()
@@ -45,16 +46,18 @@ class Launcher:
 
         self.alert_executor = AlertExecutor(self.alert_queue, self.lamp_manager)
 
-        #self.lamp_manager.setup()
         self.alert_listener.start()
         self.alert_executor.start()
 
         try:
             for s in self.sensors:
-                self.scheduler.add_job(s.getData, 'cron', second=self.triggerSecond)
+                self.scheduler.add_job(s.getData, 'cron', second=self.triggerSecond,
+                                       misfire_grace_time=self.max_late_allowed)
 
-            self.scheduler.add_job(self.elaborateManager.update, 'cron', minute=self.triggerMinute, second=self.triggerSecond)
-            self.scheduler.add_job(clean_old_data, 'cron', minute=0, second=0, hour=23)
+            self.scheduler.add_job(self.elaborateManager.update, 'cron', minute=self.triggerMinute,
+                                   second=self.triggerSecond, misfire_grace_time=self.max_late_allowed)
+            self.scheduler.add_job(clean_old_data, 'cron', minute=0, second=0, hour=23,
+                                   misfire_grace_time=self.max_late_allowed)
             self.scheduler.start()
 
             Logger.getInstance().printline("Started")

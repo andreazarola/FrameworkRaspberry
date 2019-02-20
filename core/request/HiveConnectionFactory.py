@@ -4,9 +4,20 @@ from configuration.configuration_handler import ConfigurationHandler
 
 class HiveConnectionFactory:
 
-    def createConnection(self):
-        return hive.connect(host=ConfigurationHandler.get_param('hive_connection_ip'),
-                            port=ConfigurationHandler.get_param('hive_connection_port'),
-                            username=ConfigurationHandler.get_param('hive_connection_user'),
-                            password=ConfigurationHandler.get_param('hive_connection_password'),
-                            database=ConfigurationHandler.get_param('hive_db_name'))
+    @staticmethod
+    def create_connection():
+        conf = ConfigurationHandler.get_instance()
+        password = conf.get_param('hive_connection_password')
+        if password is not '':
+            return hive.Connection(host=conf.get_param('hive_connection_ip'),
+                                   port=conf.get_param('hive_connection_port'),
+                                   username=conf.get_param('hive_connection_user'),
+                                   password=password,
+                                   database=conf.get_param('hive_db_name'),
+                                   configuration={'mapred.job.tracker': 'local'})
+        else:
+            return hive.Connection(host=conf.get_param('hive_connection_ip'),
+                                   port=conf.get_param('hive_connection_port'),
+                                   username=conf.get_param('hive_connection_user'),
+                                   database=conf.get_param('hive_db_name'),
+                                   configuration={'mapred.job.tracker': 'local'})

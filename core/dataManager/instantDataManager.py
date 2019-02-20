@@ -82,9 +82,9 @@ class InstantDataManager(DataManager):
 
         request = HiveRequestFactory().createRequest().setInfoLamp(info)
         request.setData(self.data_to_hive_list)
-        request.setTableName("Data")
+        request.setTableName("dato")
         request.execute()
-
+        request.close_connection()
         """
         resetto la lista di dati da mandare dopo che la mando ad hive
         """

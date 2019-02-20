@@ -1,8 +1,8 @@
 from request.es_connection_factory import ESConnectionFactory
 from request.es_request_factory import ES_RequestFactory
+from request.HiveConnectionFactory import HiveConnectionFactory
 from logs.logger import Logger
 from urllib3.exceptions import NewConnectionError as ConnectionError
-
 from config import Config
 import sqlite3
 
@@ -28,6 +28,7 @@ def setupLamp(absolutePath):
         conn.close()
 
     setup_es()
+    setup_hive()
 
 
 def setup_es():
@@ -63,3 +64,27 @@ def insertLamp(es_conn):
         req.execute()
     except (ConnectionError, ConnectionRefusedError):
         Logger.getInstance().printline("Errore durante la comunicazione con ElasticSearch")
+
+
+def setup_hive():
+    try:
+        conn = HiveConnectionFactory.create_connection()
+        cursor = conn.cursor()
+        query = ("select * from lampione where id_lampione = " + str(Config.idLampione))
+        cursor.execute(query)
+        result_set = cursor.fetchall()
+        exist = False
+        if len(result_set) > 0:
+            exist = True
+        if not exist:
+            insert_lamp_on_hive(cursor)
+        conn.close()
+    except Exception as e:
+        Logger.getInstance().printline(str(e) + '\n' + "on setup_hive")
+
+
+def insert_lamp_on_hive(cursor):
+    insert = ("insert into table lampione values (" + str(Config.idLampione) + ", " + str(Config.idArea) + ", " +
+                                                str(Config.lat) + ", " + str(Config.lon) + ", " +
+                                                "'" + Config.static_ip + "')")
+    cursor.execute(insert)

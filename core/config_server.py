@@ -9,4 +9,4 @@ class ConfigurationServer(Thread):
         self.app = app
 
     def run(self):
-        app.run()
+        app.run(host="0.0.0.0")

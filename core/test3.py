@@ -4,15 +4,18 @@ from base.motion_sensor import MotionSensor
 from base.noise_sensor import NoiseSensor
 from base.lum_sensor import LuminositySensor
 from base.led_sensor import LedSensor
+from base.rain_sensor import RainSensor
 from base.lamp_manager import LampManager
 from sensor_implementation.impLumSensor import ImpLuminositySensor
 from sensor_implementation.impNoiseSensor import ImpNoiseSensor
 from sensor_implementation.impMotionSensor import ImpMotionSensor
+from sensor_implementation.impRainSensor import ImpRainSensor
 from pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
 from pre_elaborazione.pre_elaboration_motion import PreElaborationMotion
 from pre_elaborazione.pre_elaboration_lum import PreElaborationLum
 from logs.logger import Logger
 from configuration.configuration_handler import ConfigurationHandler
+from configuration.configuration_trigger import ConfigurationTrigger
 from config_server import ConfigurationServer
 from config import Config
 import sys
@@ -21,17 +24,24 @@ import atexit
 
 def commit_config():
     ConfigurationHandler.get_instance().save_config()
+    ConfigurationTrigger.get_instance().save_triggers()
 
 
 def load_configs():
     path = sys.path[0]
     config_file = path + '/configuration_file'
     file = open(config_file, 'r')
-
     conf_handler = ConfigurationHandler.get_instance(config_file)
-
     for line in file.readlines()[1:]:
         conf_handler.add_param(line.rstrip())
+    file.close()
+
+    trigger_file= path + '/configuration_trigger_sensor'
+    file = open(trigger_file, 'r')
+    trigger_handler = ConfigurationTrigger.get_instance(trigger_file)
+    for line in file.readlines()[1:]:
+        trigger_handler.add_trigger(line.rstrip())
+    file.close()
 
 
 def main():
@@ -50,6 +60,7 @@ def main():
     launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
+    launcher.aggiungiSensore(RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LedSensor(LampManager.getInstance(shared), launcher.dataManager))
 
     launcher.aggiungiElaborazione(PreElaborationMotion())
@@ -72,6 +83,7 @@ def main_debug():
     launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
+    launcher.aggiungiSensore(RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LedSensor(LampManager.getInstance(shared), launcher.dataManager))
 
     launcher.aggiungiElaborazione(PreElaborationMotion())

@@ -8,10 +8,6 @@ class HiveRequest(Request):
     def __init__(self):
         super(HiveRequest, self).__init__()
         self.connection = None
-        try:
-            self.connection = HiveConnectionFactory.create_connection()
-        except Exception as e:
-            Logger.getInstance().printline(str(e))
         self.info = None
         self.dataList = None
         self.tableName = None
@@ -39,10 +35,13 @@ class HiveRequest(Request):
                          ", \'" + data.timestamp + "\')"))
         insert = insert + (", ".join(rows))
         try:
+            self.connection = HiveConnectionFactory.create_connection()
             cursor = self.connection.cursor()
             cursor.execute(insert)
+            Logger.getInstance().printline("Invio ad hive eseguito")
         except Exception as e:
             Logger.getInstance().printline(str(e))
 
     def close_connection(self):
         self.connection.close()
+        Logger.getInstance().printline("Chiusura connessione ad hive")

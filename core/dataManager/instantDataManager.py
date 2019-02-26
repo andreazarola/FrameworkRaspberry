@@ -3,6 +3,8 @@ from dataManager.dataElement import dataElement
 from local_db.dbconnection_factory import DBConnectionFactory
 from request.db_requestfactory import DBRequestFactory
 from request.hive_requestfactory import HiveRequestFactory
+from request.hive_threading_request import HiveThreadingRequest
+from configuration.configuration_handler import ConfigurationHandler
 from logs.logger import Logger
 from threading import Lock
 import json
@@ -43,34 +45,24 @@ class InstantDataManager(DataManager):
 
             data = dataElement(sensore.tipoSensore, sensore.state, sensore.lastTime)
 
-            if not self.contenuto(data):
-                """
-                Salvataggio del dato sul db locale
-                """
-                request = DBRequestFactory().createRequest().initialize()
-                request.setTimeStamp(sensore.lastTime)
-                request.setTipoDato(sensore.tipoSensore)
-                request.setValue(sensore.state)
-                request.execute()
+            """
+            Salvataggio del dato sul db locale
+            """
+            request = DBRequestFactory().createRequest().initialize()
+            request.setTimeStamp(sensore.lastTime)
+            request.setTipoDato(sensore.tipoSensore)
+            request.setValue(sensore.state)
+            request.execute()
 
-                """aggiunta del dato alla lista dei dati da inviare"""
-                self.data_to_hive_list.append(data)
-            else:
-                pass
+            """aggiunta del dato alla lista dei dati da inviare"""
+            self.data_to_hive_list.append(data)
 
-            if len(self.data_to_hive_list) == len(self.sensor_list):
-                """invio dei dati dell'ultimo minuto ad hive"""
+            if len(self.data_to_hive_list) >= ConfigurationHandler.get_instance().get_param("max_number_to_hive"):
+                """invio dei dati ad hive"""
                 self.sendToHive()
 
         finally:
             self.updateLock.release()
-
-    def contenuto(self, data):
-        if len(self.data_to_hive_list) > 0:
-            for d in self.data_to_hive_list:
-                if d.tipo == data.tipo:
-                 return True
-        return False
 
     def sendToHive(self):
         Logger.getInstance().printline("Invio dati grezzi di tutti i sensori ad hive")
@@ -81,15 +73,16 @@ class InstantDataManager(DataManager):
         Logger.getInstance().printline(json.dumps(info))
 
         request = HiveRequestFactory().createRequest().setInfoLamp(info)
-        request.setData(self.data_to_hive_list)
+        request.setData(self.data_to_hive_list[:])
         request.setTableName("dato")
-        request.execute()
-        request.close_connection()
+
+        send_request = HiveThreadingRequest(request)
+        send_request.start()
+
         """
         resetto la lista di dati da mandare dopo che la mando ad hive
         """
         self.data_to_hive_list.clear()
-        pass
 
     def getInfoLamp(self):
         connection = DBConnectionFactory.create_connection()

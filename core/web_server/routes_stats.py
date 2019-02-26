@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask import request
 from local_db.dbconnection_factory import DBConnectionFactory
 from request.id_sequence import SequenzaId
 from flask import json
@@ -10,20 +11,45 @@ routes_stats = Blueprint('urls_stats', __name__)
 def get_stats():
     connection = DBConnectionFactory.create_connection()
     last = SequenzaId.get_instance().get_last()
-    limit = 40
+    limit = 10
     c = connection.cursor()
-    c.execute('SELECT timestamp, tipo, dato '
-              'FROM Dato '
-              'WHERE id <= ? and id > ?'
-              'ORDER BY id ASC ', (last, last-limit))
-    data_list = c.fetchall()
-    print(data_list)
+    c.execute('SELECT tipo FROM Dato GROUP BY tipo')
+    result = c.fetchall()
     json_data = {}
-    for row in data_list:
-        if row[1] not in json_data:
-            json_data[row[1]] = list()
-        json_data[row[1]].append({'timestamp': row[0],
-                                  'valore': row[2]})
+    for row in result:
+        tipo = row[0]
+        c.execute('SELECT tipo, timestamp, dato '
+                     'FROM Dato '
+                     'WHERE tipo = ? and id <= ? '
+                     'ORDER BY id DESC '
+                     'LIMIT ?', (tipo, last, limit))
+        data_list = list()
+        for data in c.fetchall():
+            data_list.append({'timestamp': data[1],
+                              'valore': data[2]})
+        json_data[tipo] = data_list[::-1]
+    connection.close()
     r = json.jsonify(json_data)
     return r
 
+
+@routes_stats.route('/getStatsWithLimit', methods=['POST'])
+def getStastWithLimit():
+    connection = DBConnectionFactory.create_connection()
+    last = SequenzaId.get_instance().get_last()
+    limit = request.values.get('limit')
+    tipo = request.values.get('tipo')
+    c = connection.cursor()
+    c.execute('SELECT timestamp, dato '
+              'FROM Dato '
+              'WHERE tipo = ? and id <= ? '
+              'ORDER BY id DESC '
+              'LIMIT ?', (tipo, last, limit))
+    data_list = list()
+    for data in c.fetchall():
+        data_list.append({'timestamp': data[1],
+                          'valore': data[2]})
+    json_data = data_list[::-1]
+    connection.close()
+    r = json.jsonify(json_data)
+    return r

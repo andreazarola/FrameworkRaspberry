@@ -1,6 +1,6 @@
 Nome,Tipo,Valore
 nCampioniRiferimento,number,30
-es_host_ip,text,192.168.1.22
+es_host_ip,text,localhost
 es_host_port,number,9200
 hive_connection_ip,text,localhost
 hive_connection_port,number,10000
@@ -8,4 +8,5 @@ hive_connection_user,text,hive
 hive_connection_password,text,NULL
 hive_db_name,text,databasetesi
 livello_sicurezza,real,0.6
+max_number_to_hive,number,10
 lamp_pin,number,18

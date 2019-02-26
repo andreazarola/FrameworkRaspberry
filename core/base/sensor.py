@@ -26,7 +26,7 @@ class Sensore(ABC):
         :return:
         """
         self.state = self.implementation.get_valore()
-        self.lastTime = datetime.now().strftime("%A, %d. %B %Y %H:%M")
+        self.lastTime = datetime.now().strftime("%A, %d. %B %Y %H:%M:%S")
 
         Logger.getInstance().printline("Tempo cattura del dato di " + self.tipoSensore + ": " + self.lastTime +
                                        ",\t valore:" + str(self.state))

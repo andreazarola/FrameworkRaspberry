@@ -1,4 +1,5 @@
 from config import Config
+from configuration.configuration_handler import ConfigurationHandler
 from sensor_implementation.AbstractImplementation import AbstractImplementation
 from logs.logger import Logger
 from threading import Lock
@@ -20,7 +21,7 @@ class LampManager(AbstractImplementation):
 
     def __init__(self, GPIO_ADC):
         self.sharedGPIO_ADCReader = GPIO_ADC
-        self.pin = Config.lamp_pin
+        self.pin = ConfigurationHandler.get_instance().get_param('lamp_pin')
         self.lamp_controller = None
         self.current_dc = 0
         self.internal_lock = Lock()

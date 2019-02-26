@@ -33,7 +33,7 @@ class ElaborateData:
         """
         caso in cui mi trovo a mezzanotte
         """
-        if ora < 0:
+        if ora <= 0:
             ora = 23
             giorno = self.giornoPrec(giorno)
 

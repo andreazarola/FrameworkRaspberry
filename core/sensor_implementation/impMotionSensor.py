@@ -1,7 +1,6 @@
 from sensor_implementation.AbstractImplementation import AbstractImplementation
 from logs.logger import Logger
 from config import Config
-import random
 import time
 
 
@@ -10,6 +9,10 @@ class ImpMotionSensor(AbstractImplementation):
     def __init__(self, pin, GPIO_ADC):
         super(ImpMotionSensor, self).__init__(PIN=pin)
         self.sharedGPIO_ADCReader = GPIO_ADC
+        self.trigger_function = None
+
+    def set_trigger_function(self, function):
+        self.trigger_function = function
 
     def setup(self):
         """il sensore di movimento ha bisogno di circa un minuto per il setup iniziale"""
@@ -18,10 +21,7 @@ class ImpMotionSensor(AbstractImplementation):
             Logger.getInstance().printline("Setup iniziale motion sensor in corso")
             time.sleep(60)
             Logger.getInstance().printline("Setup iniziale motion sensor finito")
+            self.sharedGPIO_ADCReader.add_event_detect(self.PIN, self.trigger_function)
 
     def get_valore(self):
-        if Config.debug:
-            data = random.randint(0, 1)
-        else:
-            data = int(self.sharedGPIO_ADCReader.readGPIO(self.PIN))
-        return data
+        pass

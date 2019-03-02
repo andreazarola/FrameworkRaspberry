@@ -23,7 +23,7 @@ class LampManager(AbstractImplementation):
         self.sharedGPIO_ADCReader = GPIO_ADC
         self.pin = ConfigurationHandler.get_instance().get_param('lamp_pin')
         self.lamp_controller = None
-        self.current_dc = 0
+        self.current_dc = 1
         self.internal_lock = Lock()
 
     def setup(self):

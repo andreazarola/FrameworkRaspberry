@@ -14,6 +14,7 @@ class SharedGPIO_ADCReader:
         GPIO.setmode(GPIO.BCM)
         self.inputPIN = list()
         self.outputPIN = list()
+        self.event_detect_pin = list()
         self.channelADCReader = list()
         self.bus = smbus.SMBus(1)
         self.addressADC = None
@@ -105,9 +106,7 @@ class SharedGPIO_ADCReader:
         """
         if pin in self.outputPIN:
             pwm = GPIO.PWM(pin, 100)  # Initialize PWM on pwmPin 100Hz frequency
-            print("get_pwm")
-            pwm.start(10)
-            print("start 0")
+            pwm.start(1)
             return pwm
         return None
 
@@ -139,6 +138,11 @@ class SharedGPIO_ADCReader:
             return False
         finally:
             self.lockGPIO.release()
+
+    def add_event_detect(self, pin, function):
+        if pin not in self.event_detect_pin:
+            self.event_detect_pin.append(pin)
+            GPIO.add_event_detect(pin, GPIO.RISING, function)
 
     def clean(self):
         GPIO.cleanup()

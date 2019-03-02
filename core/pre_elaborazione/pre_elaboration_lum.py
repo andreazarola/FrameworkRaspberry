@@ -31,23 +31,24 @@ class PreElaborationLum(AbstractPreElaboration):
             lastSum += value
             count += 1
 
+        current_average = float(lastSum / count)
+
         info = self.get_info()
 
-        nCampioni = ConfigurationHandler.get_instance().get_param('nCampioniRiferimento')
+        n_campioni_max = ConfigurationHandler.get_instance().get_param('nCampioniRiferimento')
 
-        if info['numCampioni'] > (nCampioni * 60):
-            media = (round(info['valore_corrente'] * (nCampioni * 60)) + lastSum) / ((nCampioni + 1) * 60)
-            self.nCampioni = (nCampioni + 1) * 60
-            self.value = media
-        elif info['numCampioni'] < (nCampioni * 60):
-            media = ((round(info['valore_corrente'] * info['numCampioni'])) + lastSum) / (info['numCampioni'] + count)
-            self.nCampioni = info['numCampioni'] + count
-            self.value = media
+        if info['numCampioni'] < n_campioni_max:
+            total = (round(info['numCampioni'] * info['valore_corrente']) + current_average)
+            campioni_totali = (info['numCampioni'] + 1)
+            total_average = round(total/campioni_totali)
+            self.nCampioni = campioni_totali
+            self.value = total_average
         else:
-            count += info['numCampioni']
-            lastSum += int(round(info['valore_corrente'] * info['numCampioni']))
-            self.value = float(lastSum / count)
-            self.nCampioni = count
+            total = (round(n_campioni_max * info['valore_corrente']) + current_average)
+            campioni_totali = n_campioni_max + 1
+            total_average = round(total/campioni_totali)
+            self.nCampioni = campioni_totali
+            self.value = total_average
 
         Logger.getInstance().printline("Valore medio di " + self.tipo + " di " + giorno +
                                        " alle ore " + str(ora) + ": " + str(self.value))

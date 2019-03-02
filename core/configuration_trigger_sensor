@@ -1,6 +1,4 @@
 Sensore,Hour,Minute,Second
 Luminosita;*;*;0
 Rumore;*;*;0
-Presenza;*;*;*/5
-Pioggia;*;*;0
 Intensita Led;*;*;0

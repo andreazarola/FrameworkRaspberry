@@ -38,7 +38,7 @@ class HiveRequest(Request):
             self.connection = HiveConnectionFactory.create_connection()
             cursor = self.connection.cursor()
             cursor.execute(insert)
-            Logger.getInstance().printline("Invio ad hive eseguito")
+            Logger.getInstance().printline("Inviati ad hive: " + str(len(self.dataList)) + " dati")
         except Exception as e:
             Logger.getInstance().printline(str(e))
 

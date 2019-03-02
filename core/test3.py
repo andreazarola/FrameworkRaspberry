@@ -13,6 +13,7 @@ from sensor_implementation.impRainSensor import ImpRainSensor
 from pre_elaborazione.pre_elaboration_noise import PreElaborationNoise
 from pre_elaborazione.pre_elaboration_motion import PreElaborationMotion
 from pre_elaborazione.pre_elaboration_lum import PreElaborationLum
+from pre_elaborazione.pre_elaboration_rain import PreElaborationRain
 from logs.logger import Logger
 from configuration.configuration_handler import ConfigurationHandler
 from configuration.configuration_trigger import ConfigurationTrigger
@@ -57,15 +58,26 @@ def main():
     launcher = Launcher()
     shared = SharedGPIO_ADCReader()
     launcher.setGPIO_ADC(shared)
-    launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(LedSensor(LampManager.getInstance(shared), launcher.dataManager))
+    motion = MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager)
+    rain = RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager)
+    luminosity = LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager)
+    noise = NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager)
+    led_sensor = LedSensor(LampManager.getInstance(shared), launcher.dataManager)
+    launcher.aggiungiSensore(motion)
+    launcher.aggiungiSensore(rain)
+    launcher.aggiungiSensore(luminosity)
+    launcher.aggiungiSensore(noise)
+    launcher.aggiungiSensore(led_sensor)
+    launcher.aggiungi_sensore_passivo(noise)
+    launcher.aggiungi_sensore_passivo(led_sensor)
+    launcher.aggiungi_sensore_passivo(luminosity)
+    launcher.aggiungi_sensore_attivo(motion)
+    launcher.aggiungi_sensore_attivo(rain)
 
     launcher.aggiungiElaborazione(PreElaborationMotion())
     launcher.aggiungiElaborazione(PreElaborationLum())
     launcher.aggiungiElaborazione(PreElaborationNoise())
+    launcher.aggiungiElaborazione(PreElaborationRain())
 
     launcher.run()
 
@@ -80,15 +92,32 @@ def main_debug():
     launcher = Launcher()
     shared = None
     launcher.setGPIO_ADC(shared)
+    motion = MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager)
+    rain = RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager)
+    luminosity = LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager)
+    noise = NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager)
+    led_sensor = LedSensor(LampManager.getInstance(shared), launcher.dataManager)
+    launcher.aggiungiSensore(motion)
+    launcher.aggiungiSensore(rain)
+    launcher.aggiungiSensore(luminosity)
+    launcher.aggiungiSensore(noise)
+    launcher.aggiungiSensore(led_sensor)
+    launcher.aggiungi_sensore_passivo(noise)
+    launcher.aggiungi_sensore_passivo(led_sensor)
+    launcher.aggiungi_sensore_passivo(luminosity)
+    launcher.aggiungi_sensore_attivo(motion)
+    launcher.aggiungi_sensore_attivo(rain)
+    """
     launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager))
     launcher.aggiungiSensore(LedSensor(LampManager.getInstance(shared), launcher.dataManager))
-
+    """
     launcher.aggiungiElaborazione(PreElaborationMotion())
     launcher.aggiungiElaborazione(PreElaborationLum())
     launcher.aggiungiElaborazione(PreElaborationNoise())
+    launcher.aggiungiElaborazione(PreElaborationRain())
 
     launcher.run()
 

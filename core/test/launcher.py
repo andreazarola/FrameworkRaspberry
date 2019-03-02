@@ -17,6 +17,8 @@ class Launcher:
         self.dataManager = InstantDataManager()
         self.elaborateManager = ElaborateData()
         self.sensors = list()
+        self.active_sensor = list()
+        self.passive_sensor = list()
         self.scheduler = Scheduler.get_instance()
         self.triggerSecond = 0
         self.triggerMinute = 0
@@ -33,6 +35,12 @@ class Launcher:
 
     def aggiungiSensore(self, sensore):
         self.sensors.append(sensore)
+
+    def aggiungi_sensore_passivo(self, sensore):
+        self.passive_sensor.append(sensore)
+
+    def aggiungi_sensore_attivo(self, sensore):
+        self.active_sensor.append(sensore)
 
     def aggiungiElaborazione(self, elaboration):
         self.elaborateManager.addImplementation(elaboration)
@@ -53,7 +61,7 @@ class Launcher:
         try:
             conf_trigger = ConfigurationTrigger.get_instance()
 
-            for s in self.sensors:
+            for s in self.passive_sensor:
                 trigger = conf_trigger.get_trigger(s.tipoSensore)
                 self.scheduler.add_job(function=s.getData, second=trigger.get_second(), minute=trigger.get_minute(),
                                        hour=trigger.get_hour(), job_id=s.tipoSensore)

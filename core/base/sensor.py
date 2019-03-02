@@ -2,6 +2,7 @@ from abc import ABC
 from datetime import datetime
 from logs.logger import Logger
 
+
 class Sensore(ABC):
 
     def __init__(self, implementation, observer, tipoSensore):

@@ -8,7 +8,6 @@ from logs.logger import Logger
 from local_db.clean_old_data import clean_old_data
 from configuration.configuration_trigger import ConfigurationTrigger
 from test.scheduler import Scheduler
-import time
 
 
 class Launcher:
@@ -46,6 +45,9 @@ class Launcher:
         self.elaborateManager.addImplementation(elaboration)
 
     def run(self):
+
+        clean_old_data()
+
         if not self.sensors:
             raise Exception("Aggiungere almeno un sensore al launcher")
             return

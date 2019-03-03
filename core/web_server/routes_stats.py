@@ -47,8 +47,8 @@ def getStastWithLimit():
               'LIMIT ?', (tipo, last, limit))
     data_list = list()
     for data in c.fetchall():
-        data_list.append({'timestamp': data[1],
-                          'valore': data[2]})
+        data_list.append({'timestamp': data[0],
+                          'valore': data[1]})
     json_data = data_list[::-1]
     connection.close()
     r = json.jsonify(json_data)

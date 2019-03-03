@@ -107,13 +107,7 @@ def main_debug():
     launcher.aggiungi_sensore_passivo(luminosity)
     launcher.aggiungi_sensore_attivo(motion)
     launcher.aggiungi_sensore_attivo(rain)
-    """
-    launcher.aggiungiSensore(MotionSensor(ImpMotionSensor(pin=17, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(LuminositySensor(ImpLuminositySensor(pin=1, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(NoiseSensor(ImpNoiseSensor(pin=0, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(RainSensor(ImpRainSensor(pin=27, GPIO_ADC=shared), launcher.dataManager))
-    launcher.aggiungiSensore(LedSensor(LampManager.getInstance(shared), launcher.dataManager))
-    """
+
     launcher.aggiungiElaborazione(PreElaborationMotion())
     launcher.aggiungiElaborazione(PreElaborationLum())
     launcher.aggiungiElaborazione(PreElaborationNoise())
@@ -123,6 +117,7 @@ def main_debug():
 
 
 if __name__ == "__main__":
+    option = sys.argv[1] if len(sys.argv) > 1 else None
     load_configs()
     atexit.register(commit_config)
     conf_server = ConfigurationServer()

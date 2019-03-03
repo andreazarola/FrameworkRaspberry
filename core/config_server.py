@@ -1,5 +1,6 @@
 from threading import Thread
 from web_server import app
+from config import Config
 
 
 class ConfigurationServer(Thread):
@@ -9,4 +10,4 @@ class ConfigurationServer(Thread):
         self.app = app
 
     def run(self):
-        app.run(host="0.0.0.0")
+        app.run(host="0.0.0.0", port=Config.flask_port)

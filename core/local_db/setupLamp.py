@@ -3,7 +3,7 @@ from request.es_request_factory import ES_RequestFactory
 from request.HiveConnectionFactory import HiveConnectionFactory
 from logs.logger import Logger
 from urllib3.exceptions import NewConnectionError as ConnectionError
-from config import Config
+from system_info import SystemInfo
 import sqlite3
 
 
@@ -20,9 +20,9 @@ def setupLamp(absolutePath):
         conn.commit()
 
         conn.execute("INSERT INTO Info "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)", (Config.idLampione, Config.idArea,
-                                             Config.lat, Config.lon,
-                                             Config.static_ip, Config.prevLamp, Config.nextLamp))
+            "VALUES (?, ?, ?, ?, ?, ?, ?)", (SystemInfo.idLampione, SystemInfo.idArea,
+                                             SystemInfo.lat, SystemInfo.lon,
+                                             SystemInfo.static_ip, SystemInfo.prevLamp, SystemInfo.nextLamp))
         conn.commit()
 
         conn.close()
@@ -38,7 +38,7 @@ def setup_es():
             'size': '0',
             'query': {
                 'match': {
-                    'id_lamp': str(Config.idLampione)
+                    'id_lamp': str(SystemInfo.idLampione)
                 }
             }
         }
@@ -56,11 +56,11 @@ def insertLamp(es_conn):
         req = ES_RequestFactory().createRequest()
         req.initialize().set_connection(conn)
         req.set_index('sensor')
-        req.add_param_to_doc('static_ip', Config.static_ip)
-        req.add_param_to_doc('id_lamp', str(Config.idLampione))
-        req.add_param_to_doc('id_area', str(Config.idArea))
-        req.add_param_to_doc('latitude', str(Config.lat))
-        req.add_param_to_doc('longitude', str(Config.lon))
+        req.add_param_to_doc('static_ip', SystemInfo.static_ip)
+        req.add_param_to_doc('id_lamp', str(SystemInfo.idLampione))
+        req.add_param_to_doc('id_area', str(SystemInfo.idArea))
+        req.add_param_to_doc('latitude', str(SystemInfo.lat))
+        req.add_param_to_doc('longitude', str(SystemInfo.lon))
         req.execute()
     except (ConnectionError, ConnectionRefusedError):
         Logger.getInstance().printline("Errore durante la comunicazione con ElasticSearch")
@@ -70,7 +70,7 @@ def setup_hive():
     try:
         conn = HiveConnectionFactory.create_connection()
         cursor = conn.cursor()
-        query = ("select * from lampione where id_lampione = " + str(Config.idLampione))
+        query = ("select * from lampione where id_lampione = " + str(SystemInfo.idLampione))
         cursor.execute(query)
         result_set = cursor.fetchall()
         exist = False
@@ -84,7 +84,7 @@ def setup_hive():
 
 
 def insert_lamp_on_hive(cursor):
-    insert = ("insert into table lampione values (" + str(Config.idLampione) + ", " + str(Config.idArea) + ", " +
-                                                str(Config.lat) + ", " + str(Config.lon) + ", " +
-                                                "'" + Config.static_ip + "')")
+    insert = ("insert into table lampione values (" + str(SystemInfo.idLampione) + ", " + str(SystemInfo.idArea) + ", " +
+                                                str(SystemInfo.lat) + ", " + str(SystemInfo.lon) + ", " +
+                                                "'" + SystemInfo.static_ip + "')")
     cursor.execute(insert)

@@ -117,7 +117,6 @@ def main_debug():
 
 
 if __name__ == "__main__":
-    option = sys.argv[1] if len(sys.argv) > 1 else None
     load_configs()
     atexit.register(commit_config)
     conf_server = ConfigurationServer()

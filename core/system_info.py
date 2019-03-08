@@ -8,7 +8,8 @@ class SystemInfo:
     :param idArea: id dell'area in cui si trova il lampione
     :param lat: latitudine del punto in cui si trova il lampione
     :param lon: longitudine del punto in cui si trova il lampione
-    :param prevLamp:
+    :param prevLamp: id del prevLamp nell'intero sistema
+    :param nextLamp: id del nextLamp nell'intero sistema
     """
 
     idLampione = 0

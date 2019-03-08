@@ -61,3 +61,6 @@ class LampManager(AbstractImplementation):
 
     def get_valore(self):
         return self.current_dc
+
+    def get_sharedGPIO_ADCReader(self):
+        return self.sharedGPIO_ADCReader

@@ -9,7 +9,7 @@ class Config:
     """usato per controllare la raccolta dei dati nelle implementazioni dei sensori"""
     """debug = True --> i dati grezzi sono generati in modo random"""
     """debug = False --> i dati grezzi vengono raccolti dai sensori"""
-    debug = True
+    debug = False
 
     convertData = False
 

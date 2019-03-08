@@ -85,18 +85,44 @@ class SharedGPIO_ADCReader:
     def addInputPIN(self, pin):
         """
         :param pin: pin da inizializzare come input
+        :return: True se viene aggiunto, False se già occupato
         """
         if pin not in self.inputPIN and pin not in self.outputPIN:
             self.inputPIN.append(pin)
             GPIO.setup(pin, GPIO.IN)
+            return True
+        return False
 
     def addOutputPIN(self, pin):
         """
         :param pin: pin da inizializzare come output
+        :return: True se viene aggiunto, False se già occupato
         """
         if pin not in self.inputPIN and pin not in self.outputPIN:
             self.outputPIN.append(pin)
             GPIO.setup(pin, GPIO.OUT)
+            return True
+        return False
+
+    def removeInputPIN(self, pin):
+        """
+        :param pin: pin da rimuovere dagli input
+        :return: True se viene rimossso, False se non è presente tra gli input
+        """
+        if pin in self.inputPIN:
+            self.inputPIN.remove(pin)
+            return True
+        return False
+
+    def removeOutputPIN(self, pin):
+        """
+        :param pin: pin da rimuovere dagli output
+        :return: True se viene rimossso, False se non è presente tra gli output
+        """
+        if pin in self.outputPIN:
+            self.outputPIN.remove(pin)
+            return True
+        return False
 
     def get_pwm_pin(self, pin):
         """

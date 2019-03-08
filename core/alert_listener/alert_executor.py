@@ -3,6 +3,7 @@ from alert_listener.alert import ResetDataAlert, MaxLightAlert, MinLightAlert, S
 from local_db.dbconnection_factory import DBConnectionFactory
 from logs.logger import Logger
 import json
+from alert_listener.alarm_led import AlarmLed
 
 
 class AlertExecutor(Thread):
@@ -16,6 +17,7 @@ class AlertExecutor(Thread):
         self.queue = alert_queue
         self.lamp_manager = lamp_manager
         self.last_alert_time = None
+        self.sharedGPIO_ADCReader = self.lamp_manager.get_sharedGPIO_ADCReader()
 
     def run(self):
         while True:
@@ -24,6 +26,8 @@ class AlertExecutor(Thread):
             Logger.getInstance().printline("preso alert dalla queue")
             Logger.getInstance().printline(json.dumps(alert))
             self.last_alert_time = alert['timestamp_ricezione']
+            alarm = AlarmLed(self.sharedGPIO_ADCReader)
+            alarm.start()
             try:
                 self.handle_alert(alert)
                 self.update_alert(alert['id'])

@@ -1,4 +1,7 @@
-"""Classe di configurazione utilizzata in fase di sviluppo"""
+"""
+    Classe di configurazione utilizzata in fase di sviluppo
+    Non modificare!
+"""
 
 
 class Config:
@@ -9,7 +12,7 @@ class Config:
     """usato per controllare la raccolta dei dati nelle implementazioni dei sensori"""
     """debug = True --> i dati grezzi sono generati in modo random"""
     """debug = False --> i dati grezzi vengono raccolti dai sensori"""
-    debug = False
+    debug = True
 
     convertData = False
 

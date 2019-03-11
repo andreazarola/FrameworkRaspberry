@@ -20,9 +20,10 @@ def setupLamp(absolutePath):
         conn.commit()
 
         conn.execute("INSERT INTO Info "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)", (SystemInfo.idLampione, SystemInfo.idArea,
-                                             SystemInfo.lat, SystemInfo.lon,
-                                             SystemInfo.static_ip, SystemInfo.prevLamp, SystemInfo.nextLamp))
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (SystemInfo.idLampione, SystemInfo.idArea,
+                                                SystemInfo.lat, SystemInfo.lon,
+                                                SystemInfo.public_static_ip, SystemInfo.private_static_ip,
+                                                SystemInfo.prevLamp, SystemInfo.nextLamp))
         conn.commit()
 
         conn.close()
@@ -56,7 +57,9 @@ def insertLamp(es_conn):
         req = ES_RequestFactory().createRequest()
         req.initialize().set_connection(conn)
         req.set_index('sensor')
-        req.add_param_to_doc('static_ip', SystemInfo.static_ip)
+        req.add_param_to_doc('static_ip', SystemInfo.public_static_ip)
+        req.add_param_to_doc('alert_port', str(SystemInfo.public_alert_port))
+        req.add_param_to_doc('web_server_port', str(SystemInfo.public_web_server_port))
         req.add_param_to_doc('id_lamp', str(SystemInfo.idLampione))
         req.add_param_to_doc('id_area', str(SystemInfo.idArea))
         req.add_param_to_doc('latitude', str(SystemInfo.lat))
@@ -86,5 +89,7 @@ def setup_hive():
 def insert_lamp_on_hive(cursor):
     insert = ("insert into table lampione values (" + str(SystemInfo.idLampione) + ", " + str(SystemInfo.idArea) + ", " +
                                                 str(SystemInfo.lat) + ", " + str(SystemInfo.lon) + ", " +
-                                                "'" + SystemInfo.static_ip + "')")
+                                                "'" + SystemInfo.public_static_ip + "'," +
+                                                str(SystemInfo.public_alert_port) + ", " +
+                                                str(SystemInfo.public_web_server_port) + ")")
     cursor.execute(insert)

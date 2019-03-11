@@ -19,7 +19,8 @@ def init_db(path):
                  "idArea integer,"
                  "latitudine real,"
                  "longitudine real,"
-                 "static_ip text,"
+                 "public_static_ip text,"
+                 "private_static_ip text,"
                  "prevLamp integer,"
                  "nextLamp integer )")
 

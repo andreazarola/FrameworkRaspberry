@@ -23,6 +23,7 @@ def get_configuration():
                     'Tipo': d.get_tipo(),
                     'Valore': d.get_valore()})
     r = json.jsonify(json_data)
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 
 
@@ -31,9 +32,11 @@ def setConfiguration():
     nome = request.args.get("nome")
     valore = request.args.get("valore")
     ConfigurationHandler.get_instance().set_param(nome, valore)
+    ConfigurationHandler.get_instance().save_config()
     print(nome + valore)
     r = make_response()
     r.data = "ok"
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 
 
@@ -48,6 +51,7 @@ def getTriggerConfiguration():
             'Minute': t.get_minute(),
             'Second': t.get_second()})
     r = json.jsonify(json_data)
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 
 
@@ -58,6 +62,7 @@ def setTriggerConfiguration():
     minute = request.values.get("minute")
     hour = request.values.get("hour")
     result = ConfigurationTrigger.get_instance().set_trigger(sensor, hour=hour, minute=minute, second=second)
+    ConfigurationTrigger.get_instance().save_triggers()
     r = None
     if result is True:
         r = make_response()
@@ -65,6 +70,7 @@ def setTriggerConfiguration():
     else:
         r = make_response()
         r.data = "errore nella modifica"
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 
 
@@ -74,5 +80,6 @@ def getDefaultAlertValues():
     safety = ConfigurationHandler.get_instance().get_param('livello_sicurezza')
     data = {'led': light, 'safety': safety}
     r = json.jsonify(data)
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 

@@ -30,6 +30,7 @@ def get_stats():
         json_data[tipo] = data_list[::-1]
     connection.close()
     r = json.jsonify(json_data)
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r
 
 
@@ -52,4 +53,5 @@ def getStastWithLimit():
     json_data = data_list[::-1]
     connection.close()
     r = json.jsonify(json_data)
+    r.headers.add('Access-Control-Allow-Origin', '*')
     return r

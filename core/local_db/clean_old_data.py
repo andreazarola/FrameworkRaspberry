@@ -14,6 +14,7 @@ def clean_old_data():
     hour = 23
     max_id = None
     giorno = two_day_ago(today)
+    clean_old_alert(conn, today, giorno, hour)
     while max_id is None and today != giorno:
         regex = str(giorno) + ",\s\d{2}\.\s[a-zA-Z]+\s\d{4}\s" + str(hour) + ":\d+.+"
         for val in conn.execute("SELECT max(id) "
@@ -34,6 +35,27 @@ def clean_old_data():
 
     conn.commit()
     conn.close()
+
+
+def clean_old_alert(conn, today, giorno, hour):
+    max_id = None
+    while max_id is None and today != giorno:
+        regex = str(giorno) + ",\s\d{2}\.\s[a-zA-Z]+\s\d{4}\s" + str(hour) + ":\d+.+"
+        for val in conn.execute("SELECT max(id) "
+                                "FROM Alert as a "
+                                "WHERE a.timestamp REGEXP \'" + regex + "\'"):
+            if val[0] is not None:
+                max_id = int(val[0])
+                print(giorno + " " + str(hour))
+        hour -= 1
+        if hour < 0:
+            hour = 23
+            giorno = prec_giorno(giorno)
+
+    if max_id is not None:
+        conn.execute('DELETE FROM Alert '
+                     'WHERE id <= ?', (max_id,))
+        Logger.getInstance().printline("Resettati alert di due giorni fa")
 
 
 def regexp(expr, item):

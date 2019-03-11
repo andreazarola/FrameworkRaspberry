@@ -27,8 +27,12 @@ class ConnectionHandler(BaseRequestHandler):
     def save_alert_on_db(self):
         conn = DBConnectionFactory.create_connection()
         cursor = conn.cursor()
+        time_stamp = datetime.strptime(self.alert['timestamp'], "%Y-%m-%d %H:%M:%S")
+        time_stamp = time_stamp.strftime("%A, %d. %B %Y %H:%M:%S")
+        time_stamp_ricezione = datetime.strptime(self.alert['timestamp_ricezione'], "%Y-%m-%d %H:%M:%S")
+        time_stamp_ricezione = time_stamp_ricezione.strftime("%A, %d. %B %Y %H:%M:%S")
         cursor.execute('INSERT INTO Alert (tipo, valore, timestamp, timestamp_ricezione) values (?, ?, ?, ?)',
-                       (self.alert['tipo_alert'], self.alert['valore'], self.alert['timestamp'], self.alert['timestamp_ricezione']))
+                       (self.alert['tipo_alert'], self.alert['valore'], time_stamp, time_stamp_ricezione))
 
         alert_id = cursor.lastrowid
         self.alert['id'] = alert_id

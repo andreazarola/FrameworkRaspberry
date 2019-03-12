@@ -14,7 +14,7 @@ class ElaborateData:
         self.elaborate_list = list()
         self.data_list = list()
         self.idLamp = None
-        self.index_ES = 'pre_elaborazione'
+        self.index_ES = 'pre_elaborati'
 
     def addImplementation(self, impl):
         self.elaborate_list.append(impl)

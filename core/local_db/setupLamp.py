@@ -56,7 +56,7 @@ def insertLamp(es_conn):
         conn = es_conn
         req = ES_RequestFactory().createRequest()
         req.initialize().set_connection(conn)
-        req.set_index('sensor')
+        req.set_index('lampione')
         req.add_param_to_doc('static_ip', SystemInfo.public_static_ip)
         req.add_param_to_doc('alert_port', str(SystemInfo.public_alert_port))
         req.add_param_to_doc('web_server_port', str(SystemInfo.public_web_server_port))

@@ -17,13 +17,13 @@ class SystemInfo:
     :param public_web_server_port: porta publica sui cui e in ascolto flask
     """
 
-    idLampione = 0
-    idArea = 0
+    idLampione = 1
+    idArea = 1
     lat = 0
     lon = 0
-    private_static_ip = '192.168.1.22'
+    private_static_ip = '192.168.1.10'
     public_static_ip = '62.211.35.158'
     prevLamp = None
     nextLamp = None
     public_alert_port = 12965
-    public_web_server_port = 5002
+    public_web_server_port = 5000

@@ -22,7 +22,6 @@ def clean_old_data():
                                 "WHERE d.timestamp REGEXP \'" + regex + "\'"):
             if val[0] is not None:
                 max_id = int(val[0])
-                print(giorno + " " + str(hour))
         hour -= 1
         if hour < 0:
             hour = 23
@@ -46,7 +45,6 @@ def clean_old_alert(conn, today, giorno, hour):
                                 "WHERE a.timestamp REGEXP \'" + regex + "\'"):
             if val[0] is not None:
                 max_id = int(val[0])
-                print(giorno + " " + str(hour))
         hour -= 1
         if hour < 0:
             hour = 23

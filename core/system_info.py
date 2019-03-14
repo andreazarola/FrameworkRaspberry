@@ -21,7 +21,7 @@ class SystemInfo:
     idArea = 1
     lat = 0
     lon = 0
-    private_static_ip = '192.168.1.10'
+    private_static_ip = '192.168.1.22'
     public_static_ip = '62.211.35.158'
     prevLamp = None
     nextLamp = None

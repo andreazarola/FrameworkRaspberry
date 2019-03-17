@@ -6,7 +6,7 @@ hive_connection_ip,text,localhost
 hive_connection_port,number,10000
 hive_connection_user,text,hive
 hive_connection_password,text,NULL
-hive_db_name,text,databasetesi
+hive_db_name,text,database_hive
 livello_sicurezza,real,0.2
 max_number_to_hive,number,10
 lamp_pin,number,18

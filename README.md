@@ -9,12 +9,12 @@ Il sistema è stato elaborato durante il lavoro di tesi nell'ambito di un proget
 ### Prerequisiti
 
 Per l'utilizzo del sistema è necesarrio che siano installate alcune librerie:
--APScheduler==3.5.3
--Flask==1.0.2
--PyJWT==1.7.1
--PyHive
--ElasticSearch==6.3.1
--psycopg2-binary=2.7.7
+-APScheduler==3.5.3<br />
+-Flask==1.0.2<br />
+-PyJWT==1.7.1<br />
+-PyHive<br />
+-ElasticSearch==6.3.1<br />
+-psycopg2-binary=2.7.7<br />
 
 
 ## Installazione

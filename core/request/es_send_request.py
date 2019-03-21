@@ -32,7 +32,7 @@ class ES_SendRequest(Request):
 
     def execute(self):
         try:
-            self.response = self.connection.index(self.index, doc_type='_doc', body=self.doc)
+            self.response = self.connection.index(self.index, doc_type='doc', body=self.doc)
         except ESException as e:
             Logger.getInstance().printline(str(e))
 

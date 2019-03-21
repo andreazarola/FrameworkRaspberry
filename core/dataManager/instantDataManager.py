@@ -87,7 +87,7 @@ class InstantDataManager(DataManager):
     def getInfoLamp(self):
         connection = DBConnectionFactory.create_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT id_lampione, idArea, latitudine, longitudine, static_ip "
+        cursor.execute("SELECT id_lampione, idArea, latitudine, longitudine, public_static_ip "
                        "FROM Info")
         info = None
         try:

@@ -2,8 +2,8 @@ Nome,Tipo,Valore
 nCampioniRiferimento,number,30
 es_host_ip,text,160.97.63.107
 es_host_port,number,21920
-hive_connection_ip,text,localhost
-hive_connection_port,number,10000
+hive_connection_ip,text,160.97.63.107
+hive_connection_port,number,22100
 hive_connection_user,text,hive
 hive_connection_password,text,NULL
 hive_db_name,text,database_hive
